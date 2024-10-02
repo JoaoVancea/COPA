@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Página ${_selectedIndex + 1}'), // Conteúdo da página
+        child: Text('Página ${_selectedIndex + 1}'), // Conteúdo da página.
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: _selectedIndex,

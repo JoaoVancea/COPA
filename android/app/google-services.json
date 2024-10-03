@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "117073093713",
+    "project_id": "copa-e8ad2",
+    "storage_bucket": "copa-e8ad2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117073093713:android:630778a0a55652dca48470",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-DiGEWvFWZwvhMkkRRJ1oT7727MbEIP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

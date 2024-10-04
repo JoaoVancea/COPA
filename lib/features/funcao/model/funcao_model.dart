@@ -17,6 +17,13 @@ class Funcao {
     );
   }
 
+  factory Funcao.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+    return Funcao(
+      id: doc.id,
+      nome: doc.data()['nome'],
+    );
+  }
+
   Map<String, dynamic> toFirestore() {
     return {
       'nome': nome,

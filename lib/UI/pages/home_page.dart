@@ -1,5 +1,7 @@
-import 'package:copa/UI/widgets/CustomBottomNavigator.dart'; // Importe o widget customizado
+import 'package:copa/UI/pages/add_firebase.dart';
 import 'package:flutter/material.dart';
+import 'teste_firebase.dart'; // Importe a página do formulário
+import 'package:copa/UI/widgets/custom_bottom_navigation_bar.dart'; // Importe o widget customizado
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +13,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
+  // Função para mapear o índice da barra de navegação às páginas
+  final List<Widget> _pages = [
+    HomeContent(), // Conteúdo da página inicial (HomePage)
+    UserTurmaPage(), // Página com o formulário de vinculação UserTurma
+    AddEntitiesPage() // Página para adicionar ao firestore
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -20,13 +29,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Página ${_selectedIndex + 1}'), // Conteúdo da página
-      ),
+      body: _pages[_selectedIndex], // Exibe a página correspondente
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped, // Função callback
       ),
+    );
+  }
+}
+
+// Widget que representa o conteúdo da HomePage
+class HomeContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Bem-vindo à Home!'), // Conteúdo da HomePage
     );
   }
 }

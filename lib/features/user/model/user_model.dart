@@ -24,6 +24,15 @@ class User {
     );
   }
 
+  factory User.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+    return User(
+      id: doc.id,
+      nome: doc.data()['nome'],
+      email: doc.data()['email'],
+      senha: doc.data()['senha'],
+    );
+  }
+
   // Método para converter User em um mapa para o Firestore
   Map<String, dynamic> toFirestore() {
     return {

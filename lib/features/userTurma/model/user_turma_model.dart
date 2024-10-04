@@ -26,6 +26,16 @@ class UserTurma {
     );
   }
 
+  factory UserTurma.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+    return UserTurma(
+      id: doc.id,
+      userId: doc.data()['user_id'],
+      turmaId: doc.data()['turma_id'],
+      funcaoId: doc.data()['funcao_id'],
+      status: doc.data()['status'],
+    );
+  }
+
   Map<String, dynamic> toFirestore() {
     return {
       'user_id': userId,

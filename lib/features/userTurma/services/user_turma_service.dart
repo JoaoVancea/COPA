@@ -5,9 +5,9 @@ class UserTurmaService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final CollectionReference _userTurmaCollection = FirebaseFirestore.instance.collection('userTurma');
 
-  // Obtém todas as relaões user-turma
+  // Obtém todas as relações User-Turma
   Future<List<UserTurma>> getUserTurmas() async {
-    QuerySnapshot<Map<String, dynamic>> snapshot = await _userTurmaCollection.get() as QuerySnapshot<Map<String, dynamic>>;
+    QuerySnapshot snapshot = await _userTurmaCollection.get();
     return snapshot.docs.map((doc) => UserTurma.fromFirestore(doc)).toList();
   }
 

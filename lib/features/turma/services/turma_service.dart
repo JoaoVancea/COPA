@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:copa/features/turma/model/turma_model.dart';
 
-
 class TurmaService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final CollectionReference _turmasCollection = FirebaseFirestore.instance.collection('turmas');
 
-   // Obtém todas as turmas
+  // Obtém todas as turmas
   Future<List<Turma>> getTurmas() async {
-    QuerySnapshot<Map<String, dynamic>> snapshot = await _turmasCollection.get() as QuerySnapshot<Map<String, dynamic>>;
+    QuerySnapshot snapshot = await _turmasCollection.get();
     return snapshot.docs.map((doc) => Turma.fromFirestore(doc)).toList();
   }
 
@@ -27,3 +26,4 @@ class TurmaService {
     await _turmasCollection.doc(id).delete();
   }
 }
+

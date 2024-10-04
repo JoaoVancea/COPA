@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  String id;
-  String nome;
-  String email;
-  String senha;
+  final String id;
+  final String nome;
+  final String email;
+  final String senha;
 
   User({
     required this.id,
@@ -13,27 +13,18 @@ class User {
     required this.senha,
   });
 
-  // Construtor a partir de documento do Firestore
-  factory User.fromDocument(DocumentSnapshot doc) {
+  // Método para criar um objeto User a partir de um DocumentSnapshot do Firestore
+  factory User.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return User(
-      id: doc.id,  // O id do documento
-      nome: data['nome'],
-      email: data['email'],
-      senha: data['senha'],
-    );
-  }
-
-  factory User.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
-    return User(
       id: doc.id,
-      nome: doc.data()['nome'],
-      email: doc.data()['email'],
-      senha: doc.data()['senha'],
+      nome: data['nome'] ?? '',
+      email: data['email'] ?? '',
+      senha: data['senha'] ?? '',
     );
   }
 
-  // Método para converter User em um mapa para o Firestore
+  // Método para converter um objeto User em um Map para salvar no Firestore
   Map<String, dynamic> toFirestore() {
     return {
       'nome': nome,

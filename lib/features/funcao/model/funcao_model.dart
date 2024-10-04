@@ -1,29 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Funcao {
-  String id;
-  String nome;
+  final String id;
+  final String nome;
 
   Funcao({
     required this.id,
     required this.nome,
   });
 
-  factory Funcao.fromDocument(DocumentSnapshot doc) {
+  // Método para criar um objeto Funcao a partir de um DocumentSnapshot do Firestore
+  factory Funcao.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Funcao(
       id: doc.id,
-      nome: data['nome'],
+      nome: data['nome'] ?? '',
     );
   }
 
-  factory Funcao.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
-    return Funcao(
-      id: doc.id,
-      nome: doc.data()['nome'],
-    );
-  }
-
+  // Método para converter um objeto Funcao em um Map para salvar no Firestore
   Map<String, dynamic> toFirestore() {
     return {
       'nome': nome,

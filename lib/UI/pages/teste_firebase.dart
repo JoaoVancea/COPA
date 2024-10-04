@@ -27,11 +27,10 @@ class _UserTurmaPageState extends State<UserTurmaPage> {
   void _submitUserTurma() async {
     if (selectedUserId != null && selectedTurmaId != null && selectedFuncaoId != null) {
       final newUserTurma = UserTurma(
-        id: '',
         userId: selectedUserId!,
         turmaId: selectedTurmaId!,
         funcaoId: selectedFuncaoId!,
-        status: _userTurmaStatus,
+        statusAtivo: _userTurmaStatus,
       );
 
       await userTurmaService.createUserTurma(newUserTurma);

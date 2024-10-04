@@ -1,29 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Turma {
-  String id;
-  String nome;
+  final String id;
+  final String nome;
 
   Turma({
     required this.id,
     required this.nome,
   });
 
-  factory Turma.fromDocument(DocumentSnapshot doc) {
+  // Método para criar um objeto Turma a partir de um DocumentSnapshot do Firestore
+  factory Turma.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Turma(
       id: doc.id,
-      nome: data['nome'],
+      nome: data['nome'] ?? '',
     );
   }
 
-  factory Turma.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
-    return Turma(
-      id: doc.id,
-      nome: doc.data()['nome'],
-    );
-  }
-
+  // Método para converter um objeto Turma em um Map para salvar no Firestore
   Map<String, dynamic> toFirestore() {
     return {
       'nome': nome,

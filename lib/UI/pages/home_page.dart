@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     HomeContent(), // Conteúdo da página inicial (HomePage)
     UserTurmaPage(), // Página com o formulário de vinculação UserTurma
-    AddEntitiesPage() // Página para adicionar ao firestore
+    AdminPage() // Página para adicionar ao firestore
   ];
 
   void _onItemTapped(int index) {

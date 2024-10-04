@@ -1,47 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserTurma {
-  String id;
-  String userId;
-  String turmaId;
-  String funcaoId;
-  bool status;
+  final String userId;
+  final String turmaId;
+  final String funcaoId;
+  final bool statusAtivo;
 
   UserTurma({
-    required this.id,
     required this.userId,
     required this.turmaId,
     required this.funcaoId,
-    required this.status,
+    required this.statusAtivo,
   });
 
-  factory UserTurma.fromDocument(DocumentSnapshot doc) {
+  // Método para criar um objeto UserTurma a partir de um DocumentSnapshot do Firestore
+  factory UserTurma.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return UserTurma(
-      id: doc.id,
-      userId: data['user_id'],
-      turmaId: data['turma_id'],
-      funcaoId: data['funcao_id'],
-      status: data['status'],
+      userId: data['user_id'] ?? '',
+      turmaId: data['turma_id'] ?? '',
+      funcaoId: data['funcao_id'] ?? '',
+      statusAtivo: data['status'] ?? false,
     );
   }
 
-  factory UserTurma.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
-    return UserTurma(
-      id: doc.id,
-      userId: doc.data()['user_id'],
-      turmaId: doc.data()['turma_id'],
-      funcaoId: doc.data()['funcao_id'],
-      status: doc.data()['status'],
-    );
-  }
-
+  // Método para converter um objeto UserTurma em um Map para salvar no Firestore
   Map<String, dynamic> toFirestore() {
     return {
       'user_id': userId,
       'turma_id': turmaId,
       'funcao_id': funcaoId,
-      'status': status,
+      'status': statusAtivo,
     };
   }
 }

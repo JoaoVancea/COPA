@@ -7,7 +7,7 @@ class FuncaoService {
 
   // Obtém todas as funções
   Future<List<Funcao>> getFuncoes() async {
-    QuerySnapshot<Map<String, dynamic>> snapshot = await _funcoesCollection.get() as QuerySnapshot<Map<String, dynamic>>;
+    QuerySnapshot snapshot = await _funcoesCollection.get();
     return snapshot.docs.map((doc) => Funcao.fromFirestore(doc)).toList();
   }
 
@@ -26,3 +26,4 @@ class FuncaoService {
     await _funcoesCollection.doc(id).delete();
   }
 }
+

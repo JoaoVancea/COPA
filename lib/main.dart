@@ -1,4 +1,5 @@
 import 'package:copa/UI/pages/home_page.dart';
+import 'package:copa/UI/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -13,8 +14,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage(),
+    return MaterialApp(
+      home: LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -1,87 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
+  bool _isObscured = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 50),
-            Center(
-              child: Column(
-                children: [
-                  Container(
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: [Color(0xFF00B4D8), Color(0xFF5E60CE)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.cloud,
-                        size: 60,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Seja Bem-Vindo',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ],
+            const SizedBox(height: 150),
+            Text('Login',
+                style: GoogleFonts.montserrat(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
+            const SizedBox(height: 50),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                'Login',
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 22,
+                    color: Colors.grey),
               ),
-            ),
-            SizedBox(height: 40),
-            Text(
-              'Login',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+              const TextField(
+                decoration: InputDecoration(
+                  hintText: 'Login',
+                  border: UnderlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Login',
-                border: OutlineInputBorder(),
+            ]),
+            const SizedBox(height: 20),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                'Senha',
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 22,
+                    color: Colors.grey),
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Senha',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(Icons.visibility),
-              ),
-            ),
-            SizedBox(height: 30),
+              PasswordField()
+            ]),
+            const SizedBox(height: 80),
             Center(
               child: Container(
                 width: double.infinity,
-                height: 60,
+                height: 72,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF00B4D8), Color(0xFF5E60CE)],
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF4960F9), Color(0xFF1433FF)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(28),
                 ),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -93,20 +68,57 @@ class LoginScreen extends StatelessWidget {
                   ),
                   onPressed: () {},
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      const SizedBox(width: 20),
                       Text(
                         'Login',
-                        style: TextStyle(fontSize: 18),
+                        style: GoogleFonts.montserrat(
+                          fontSize: 20,
+                          color: Colors.white
+                        ),
                       ),
-                      SizedBox(width: 10),
-                      Icon(Icons.arrow_forward),
+                      const SizedBox(width: 160),
+                      const Icon(Icons.arrow_forward, color: Colors.white),
                     ],
                   ),
                 ),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class PasswordField extends StatefulWidget {
+  @override
+  _PasswordFieldState createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<PasswordField> {
+  bool _isObscured = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(0),
+      child: TextField(
+        obscureText: _isObscured,
+        decoration: InputDecoration(
+          hintText: 'Senha',
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isObscured ? Icons.visibility : Icons.visibility_off,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              setState(() {
+                _isObscured = !_isObscured;
+              });
+            },
+          ),
         ),
       ),
     );

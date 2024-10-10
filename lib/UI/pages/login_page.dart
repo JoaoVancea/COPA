@@ -1,3 +1,4 @@
+import 'package:copa/UI/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -73,7 +74,11 @@ class LoginScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const HomePage()));
+                          },
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(30, 5, 20, 5),
                             child: Row(

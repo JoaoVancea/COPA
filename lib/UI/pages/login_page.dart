@@ -64,7 +64,7 @@ class LoginScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(28),
                     ),
                     child: Stack(
-                      alignment: Alignment.centerRight,
+                      alignment: Alignment.topRight,
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(

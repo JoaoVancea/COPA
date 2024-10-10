@@ -1,4 +1,5 @@
 import 'package:copa/UI/pages/add_firebase.dart';
+import 'package:copa/UI/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'teste_firebase.dart'; // Importe a página do formulário
 import 'package:copa/UI/widgets/custom_bottom_navigation_bar.dart'; // Importe o widget customizado
@@ -17,7 +18,8 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     HomeContent(), // Conteúdo da página inicial (HomePage)
     UserTurmaPage(), // Página com o formulário de vinculação UserTurma
-    AdminPage() // Página para adicionar ao firestore
+    AdminPage(),
+    ProfilePage() // Página para adicionar ao firestore
   ];
 
   void _onItemTapped(int index) {

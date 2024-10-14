@@ -60,78 +60,74 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: 56,
                         width: 315,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            color: const Color(0xFF2743FD),
-                            width: 1
-                          ),
-                          borderRadius: BorderRadius.circular(28)
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: 
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: Text(
-                                'Editar Perfil',
-                                style: GoogleFonts.montserrat(fontSize: 15, color: const Color(0xFF2743FD)),
-                              ),
+                            color: Colors.white,
+                            border: Border.all(
+                                color: const Color(0xFF2743FD), width: 1),
+                            borderRadius: BorderRadius.circular(28)),
+                        child: ElevatedButton(
+                          onPressed: () => {},
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Editar Perfil',
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 15, color: const Color(0xFF2743FD)),
                             ),
+                          ),
                         )),
                     const SizedBox(height: 16),
                     Container(
                         height: 56,
                         width: 315,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            color: const Color(0xFF2743FD),
-                            width: 1
-                          ),
-                          borderRadius: BorderRadius.circular(28)
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: 
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: Text(
-                                'Mudar Senha',
-                                style: GoogleFonts.montserrat(fontSize: 15, color: const Color(0xFF2743FD)),
-                              ),
+                            color: Colors.white,
+                            border: Border.all(
+                                color: const Color(0xFF2743FD), width: 1),
+                            borderRadius: BorderRadius.circular(28)),
+                        child: ElevatedButton(
+                          onPressed: () => {},
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Mudar Senha',
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 15, color: const Color(0xFF2743FD)),
                             ),
+                          ),
                         )),
                     const SizedBox(height: 16),
                     Container(
                         height: 56,
                         width: 315,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            color: const Color(0xFF2743FD),
-                            width: 1
-                          ),
-                          borderRadius: BorderRadius.circular(28)
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: 
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Desconectar',
-                                    style: GoogleFonts.montserrat(fontSize: 15, color: const Color(0xFF2743FD)),
-                                  ),
-                                  const Icon(Icons.logout, color: Color(0xFF2743FD), size: 15, weight: 2),
-                                ],
-                              ),
+                            color: Colors.white,
+                            border: Border.all(
+                                color: const Color(0xFF2743FD), width: 1),
+                            borderRadius: BorderRadius.circular(28)),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _logoutConfirmation(context);
+                          },
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Desconectar',
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 15,
+                                      color: const Color(0xFF2743FD)),
+                                ),
+                                const Icon(Icons.logout,
+                                    color: Color(0xFF2743FD),
+                                    size: 25,
+                                    weight: 2),
+                              ],
                             ),
+                          ),
                         )),
                     const SizedBox(height: 16),
-                    
                   ],
                 ),
               ),
@@ -141,4 +137,27 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+}
+
+void _logoutConfirmation(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(70),
+          ),
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                SvgPicture.asset('logoutConfirmation.svg'),
+                const SizedBox(height: 24),
+                Text('Tem Certeza?', style: GoogleFonts.montserrat(fontSize: 24, fontWeight: FontWeight.bold),)
+                
+              ],
+            ),
+          ),
+        );
+      });
 }

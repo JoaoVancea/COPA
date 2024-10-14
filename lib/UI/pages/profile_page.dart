@@ -37,9 +37,101 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(width: 12),
                         Text('Lucas Gonzales',
                             style: GoogleFonts.aBeeZee(
-                                fontSize: 20, fontStyle: FontStyle.italic))
+                                fontSize: 20,
+                                fontStyle: FontStyle.italic,
+                                color: const Color(0xFF2743FD)))
                       ],
-                    )
+                    ),
+                    const SizedBox(height: 40),
+                    Text('Função', style: GoogleFonts.roboto(fontSize: 14)),
+                    const SizedBox(height: 15),
+                    Text('Professor',
+                        style: GoogleFonts.aBeeZee(
+                            fontSize: 14, color: const Color(0xFF2743FD))),
+                    const SizedBox(height: 32),
+                    Text('Tipo de Conta',
+                        style: GoogleFonts.roboto(fontSize: 14)),
+                    const SizedBox(height: 15),
+                    Text('Administrador',
+                        style: GoogleFonts.aBeeZee(
+                            fontSize: 14, color: const Color(0xFF2743FD))),
+                    const SizedBox(height: 50),
+                    Container(
+                        height: 56,
+                        width: 315,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: const Color(0xFF2743FD),
+                            width: 1
+                          ),
+                          borderRadius: BorderRadius.circular(28)
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: 
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Text(
+                                'Editar Perfil',
+                                style: GoogleFonts.montserrat(fontSize: 15, color: const Color(0xFF2743FD)),
+                              ),
+                            ),
+                        )),
+                    const SizedBox(height: 16),
+                    Container(
+                        height: 56,
+                        width: 315,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: const Color(0xFF2743FD),
+                            width: 1
+                          ),
+                          borderRadius: BorderRadius.circular(28)
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: 
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Text(
+                                'Mudar Senha',
+                                style: GoogleFonts.montserrat(fontSize: 15, color: const Color(0xFF2743FD)),
+                              ),
+                            ),
+                        )),
+                    const SizedBox(height: 16),
+                    Container(
+                        height: 56,
+                        width: 315,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: const Color(0xFF2743FD),
+                            width: 1
+                          ),
+                          borderRadius: BorderRadius.circular(28)
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: 
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Desconectar',
+                                    style: GoogleFonts.montserrat(fontSize: 15, color: const Color(0xFF2743FD)),
+                                  ),
+                                  const Icon(Icons.logout, color: Color(0xFF2743FD), size: 15, weight: 2),
+                                ],
+                              ),
+                            ),
+                        )),
+                    const SizedBox(height: 16),
+                    
                   ],
                 ),
               ),

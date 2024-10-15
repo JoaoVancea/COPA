@@ -1,3 +1,4 @@
+import 'package:copa/UI/pages/change_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -92,7 +93,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           Border.all(color: const Color(0xFF2743FD), width: 1),
                       borderRadius: BorderRadius.circular(28)),
                   child: ElevatedButton(
-                    onPressed: () => {},
+                    onPressed: () {
+                      Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ChangePassword()));
+                    },
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -207,7 +212,7 @@ void _logoutConfirmation(BuildContext context) {
                                 ),
                               ),
                               onPressed: () {
-                               
+                               Navigator.of(context).pop();
                               },
                               child: Align(
                                 alignment: Alignment.centerLeft,
@@ -223,9 +228,9 @@ void _logoutConfirmation(BuildContext context) {
                                 ),
                               ),
                             ),
-                            // Align(
-                            //   alignment: Alignment.topRight,
-                            //   child: SvgPicture.asset('logoutConfirmationButton.svg')),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: SvgPicture.asset('logoutConfirmationButton.svg'))
                           ],
                         ),
                       ),

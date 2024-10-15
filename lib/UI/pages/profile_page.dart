@@ -56,82 +56,83 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: GoogleFonts.aBeeZee(
                             fontSize: 14, color: const Color(0xFF2743FD))),
                     const SizedBox(height: 50),
-                    Container(
-                        height: 56,
-                        width: 315,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                                color: const Color(0xFF2743FD), width: 1),
-                            borderRadius: BorderRadius.circular(28)),
-                        child: ElevatedButton(
-                          onPressed: () => {},
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Editar Perfil',
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 15, color: const Color(0xFF2743FD)),
-                            ),
-                          ),
-                        )),
-                    const SizedBox(height: 16),
-                    Container(
-                        height: 56,
-                        width: 315,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                                color: const Color(0xFF2743FD), width: 1),
-                            borderRadius: BorderRadius.circular(28)),
-                        child: ElevatedButton(
-                          onPressed: () => {},
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Mudar Senha',
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 15, color: const Color(0xFF2743FD)),
-                            ),
-                          ),
-                        )),
-                    const SizedBox(height: 16),
-                    Container(
-                        height: 56,
-                        width: 315,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                                color: const Color(0xFF2743FD), width: 1),
-                            borderRadius: BorderRadius.circular(28)),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _logoutConfirmation(context);
-                          },
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Desconectar',
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 15,
-                                      color: const Color(0xFF2743FD)),
-                                ),
-                                const Icon(Icons.logout,
-                                    color: Color(0xFF2743FD),
-                                    size: 25,
-                                    weight: 2),
-                              ],
-                            ),
-                          ),
-                        )),
-                    const SizedBox(height: 16),
                   ],
                 ),
               ),
             ],
+          ),
+          Center(
+            child: Column(children: [
+              Container(
+                  height: 56,
+                  width: 315,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border:
+                          Border.all(color: const Color(0xFF2743FD), width: 1),
+                      borderRadius: BorderRadius.circular(28)),
+                  child: ElevatedButton(
+                    onPressed: () => {},
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Editar Perfil',
+                        style: GoogleFonts.montserrat(
+                            fontSize: 15, color: const Color(0xFF2743FD)),
+                      ),
+                    ),
+                  )),
+              const SizedBox(height: 16),
+              Container(
+                  height: 56,
+                  width: 315,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border:
+                          Border.all(color: const Color(0xFF2743FD), width: 1),
+                      borderRadius: BorderRadius.circular(28)),
+                  child: ElevatedButton(
+                    onPressed: () => {},
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Mudar Senha',
+                        style: GoogleFonts.montserrat(
+                            fontSize: 15, color: const Color(0xFF2743FD)),
+                      ),
+                    ),
+                  )),
+              const SizedBox(height: 16),
+              Container(
+                  height: 56,
+                  width: 315,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border:
+                          Border.all(color: const Color(0xFF2743FD), width: 1),
+                      borderRadius: BorderRadius.circular(28)),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _logoutConfirmation(context);
+                    },
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Desconectar',
+                            style: GoogleFonts.montserrat(
+                                fontSize: 15, color: const Color(0xFF2743FD)),
+                          ),
+                          const Icon(Icons.logout,
+                              color: Color(0xFF2743FD), size: 25, weight: 2),
+                        ],
+                      ),
+                    ),
+                  )),
+              const SizedBox(height: 16),
+            ]),
           ),
         ],
       ),
@@ -153,8 +154,85 @@ void _logoutConfirmation(BuildContext context) {
               children: [
                 SvgPicture.asset('logoutConfirmation.svg'),
                 const SizedBox(height: 24),
-                Text('Tem Certeza?', style: GoogleFonts.montserrat(fontSize: 24, fontWeight: FontWeight.bold),)
-                
+                Text(
+                  'Tem Certeza?',
+                  style: GoogleFonts.montserrat(
+                      fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                        height: 40,
+                        width: 88,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                                color: const Color(0xFF2743FD), width: 1),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Sim',
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 15,
+                                  color: const Color(0xFF2743FD)),
+                            ),
+                          ),
+                        )),
+                    Center(
+                      child: Container(
+                        width: 88,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF4960F9), Color(0xFF1433FF)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(28),
+                        ),
+                        child: Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                              onPressed: () {
+                               
+                              },
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Não',
+                                      style: GoogleFonts.montserrat(
+                                          fontSize: 15, color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // Align(
+                            //   alignment: Alignment.topRight,
+                            //   child: SvgPicture.asset('logoutConfirmationButton.svg')),
+                          ],
+                        ),
+                      ),
+                    ), 
+                  ],
+                ),
+                const SizedBox(height: 20)
               ],
             ),
           ),

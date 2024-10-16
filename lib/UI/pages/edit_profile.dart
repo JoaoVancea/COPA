@@ -14,39 +14,40 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF4960F9),
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(200),
-        child: AppBar(
-          backgroundColor: const Color(0xFF4960F9),
-          iconTheme: const IconThemeData(color: Colors.white),
-          flexibleSpace: Center(
-              child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-                  child: Center(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SvgPicture.asset('behindPhoto.svg'),
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(36),
-                              color: Colors.white),
-                          child: Padding(
-                            padding: const EdgeInsets.all(35),
-                            child: SvgPicture.asset('camera.svg'),
-                          ),
-                        )
-                      ],
-                    ),
-                  ))),
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(30),
         child: ListView(
           children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      )),
+                ),
+                SvgPicture.asset('behindPhoto.svg'),
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(36),
+                      color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.all(35),
+                    child: SvgPicture.asset('camera.svg'),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 15),
             Text('Nome',
                 style: GoogleFonts.roboto(
                     fontSize: 14, color: const Color(0xFF80E0FF))),
@@ -120,8 +121,16 @@ class _EditProfileState extends State<EditProfile> {
                     borderRadius: BorderRadius.circular(28)),
                 child: Center(
                   child: ElevatedButton(
-                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        minimumSize: const Size(double.infinity, double.infinity)
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text('Finalizar',
                               style: GoogleFonts.montserrat(

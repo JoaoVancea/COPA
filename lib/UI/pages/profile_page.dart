@@ -1,4 +1,5 @@
 import 'package:copa/UI/pages/change_password.dart';
+import 'package:copa/UI/pages/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -73,7 +74,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           Border.all(color: const Color(0xFF2743FD), width: 1),
                       borderRadius: BorderRadius.circular(28)),
                   child: ElevatedButton(
-                    onPressed: () => {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditProfile()));
+                    },
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -95,8 +101,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => ChangePassword()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChangePassword()));
                     },
                     child: Align(
                       alignment: Alignment.centerLeft,
@@ -183,8 +190,7 @@ void _logoutConfirmation(BuildContext context) {
                             child: Text(
                               'Sim',
                               style: GoogleFonts.montserrat(
-                                  fontSize: 15,
-                                  color: const Color(0xFF2743FD)),
+                                  fontSize: 15, color: const Color(0xFF2743FD)),
                             ),
                           ),
                         )),
@@ -212,12 +218,13 @@ void _logoutConfirmation(BuildContext context) {
                                 ),
                               ),
                               onPressed: () {
-                               Navigator.of(context).pop();
+                                Navigator.of(context).pop();
                               },
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       'Não',
@@ -229,12 +236,13 @@ void _logoutConfirmation(BuildContext context) {
                               ),
                             ),
                             Align(
-                              alignment: Alignment.topRight,
-                              child: SvgPicture.asset('logoutConfirmationButton.svg'))
+                                alignment: Alignment.topRight,
+                                child: SvgPicture.asset(
+                                    'logoutConfirmationButton.svg'))
                           ],
                         ),
                       ),
-                    ), 
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20)

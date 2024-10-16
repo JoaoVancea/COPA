@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class EditProfile extends StatefulWidget {
-  const EditProfile({super.key});
+class EditClass extends StatefulWidget {
+  const EditClass({super.key});
 
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  State<EditClass> createState() => _EditClassState();
 }
 
-class _EditProfileState extends State<EditProfile> {
+class _EditClassState extends State<EditClass> {
   @override
   Widget build(BuildContext context) {
     double svgWidth = MediaQuery.of(context).size.width * 0.9;
@@ -17,6 +17,9 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
       backgroundColor: const Color(0xFF4960F9),
       body: Stack(children: [
+        Align(
+            alignment: Alignment.topRight,
+            child: SvgPicture.asset('editClass.svg', width: svgWidth)),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: Align(
@@ -35,7 +38,6 @@ class _EditProfileState extends State<EditProfile> {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  SvgPicture.asset('behindPhoto.svg'),
                   Container(
                     width: 100,
                     height: 100,
@@ -50,13 +52,13 @@ class _EditProfileState extends State<EditProfile> {
                 ],
               ),
               const SizedBox(height: 15),
-              Text('Nome',
+              Text('Nome da Turma',
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextField(
                 decoration: InputDecoration(
-                    hintText: 'Nicolas',
+                    hintText: 'Garotos de Programa',
                     hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
                     suffixIcon: IconButton(
                       icon: const Icon(
@@ -71,13 +73,13 @@ class _EditProfileState extends State<EditProfile> {
                         borderSide: BorderSide(color: Colors.white))),
               ),
               const SizedBox(height: 20),
-              Text('Sobrenome',
+              Text('Turma',
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextField(
                 decoration: InputDecoration(
-                    hintText: 'Barbosa',
+                    hintText: '3DS',
                     hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
                     suffixIcon: IconButton(
                       icon: const Icon(
@@ -92,13 +94,13 @@ class _EditProfileState extends State<EditProfile> {
                         borderSide: BorderSide(color: Colors.white))),
               ),
               const SizedBox(height: 20),
-              Text('Email',
+              Text('Sigla (MAX: 3 Letras)',
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextField(
                 decoration: InputDecoration(
-                    hintText: 'nicolasbarbosap@yahoo.com',
+                    hintText: 'GPS',
                     hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
                     suffixIcon: IconButton(
                       icon: const Icon(

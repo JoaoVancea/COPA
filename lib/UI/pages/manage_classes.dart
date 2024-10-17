@@ -14,19 +14,17 @@ class _ManageClassesState extends State<ManageClasses> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
+        Stack(alignment: Alignment.center, children: [
           Container(
             width: double.infinity,
             height: 300,
             decoration: const BoxDecoration(
-                color: const Color(0xFF4960F9),
+                color: Color(0xFF4960F9),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(70),
                     bottomRight: Radius.circular(70))),
             child: Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -85,25 +83,24 @@ class _ManageClassesState extends State<ManageClasses> {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 315,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(40)
-                  ),
-                  child: Padding(padding: EdgeInsets.all(20), child: Column(
-                    children: [
-                      DropdownForm(),
-
-                    ],
-                  ),),
-                )
-              ],
+          Positioned(
+            top: 275,
+            left: 30,
+            right: 30,
+            child: Container(
+              width: double.infinity,
+              height: 315,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(40)),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    DropdownForm(),
+                    
+                  ],
+                ),
+              ),
             ),
           )
         ])
@@ -128,7 +125,7 @@ class _DropdownFormState extends State<DropdownForm> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         DropdownButton<String>(
-          hint: Text('Selecione uma turma'),
+          hint: Text('Selecione uma turma', style: GoogleFonts.montserrat(fontSize: 12, color: Colors.black)),
           value: selectedValue,
           onChanged: (String? newValue) {
             setState(() {
@@ -138,12 +135,11 @@ class _DropdownFormState extends State<DropdownForm> {
           items: options.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value),
+              child: Text(value, style: const TextStyle(color: Colors.black),),
             );
           }).toList(),
         ),
-        if (selectedValue != null) 
-          Text('You selected: $selectedValue'),
+        if (selectedValue != null) Text('You selected: $selectedValue'),
       ],
     );
   }

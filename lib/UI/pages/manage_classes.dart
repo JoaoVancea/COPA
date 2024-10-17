@@ -10,11 +10,14 @@ class ManageClasses extends StatefulWidget {
 }
 
 class _ManageClassesState extends State<ManageClasses> {
+  String? selectedClass = '3DS';
+  final List<String> classes = ['3DS', '2DS', '1DS'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(children: [
-        Stack(alignment: Alignment.center, children: [
+        Stack(children: [
           Container(
             width: double.infinity,
             height: 300,
@@ -83,64 +86,115 @@ class _ManageClassesState extends State<ManageClasses> {
               ),
             ),
           ),
-          Positioned(
-            top: 275,
-            left: 30,
-            right: 30,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 280, 20, 20),
             child: Container(
               width: double.infinity,
-              height: 315,
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(40)),
+                  color: const Color(0xFFDFDFDF),
+                  borderRadius: BorderRadius.circular(40)),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
-                  children: [
-                    DropdownForm(),
-                    
-                  ],
-                ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DropdownButtonFormField<String>(
+                        value: selectedClass,
+                        items: classes.map((String className) {
+                          return DropdownMenuItem<String>(
+                            value: className,
+                            child: Text(className),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedClass = newValue;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(40),
+                            border: Border.all(color: const Color(0xFFF2F4F8))),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              border: InputBorder.none,
+                              hintText: 'Presença',
+                              hintStyle: GoogleFonts.montserrat(
+                                  color: const Color(0xFF979797))),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(40),
+                            border: Border.all(color: const Color(0xFFF2F4F8))),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              border: InputBorder.none,
+                              hintText: 'Evento',
+                              hintStyle: GoogleFonts.montserrat(
+                                  color: const Color(0xFF979797))),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF4960F9), Color(0xFF1433FF)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(28),
+                        ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Atribuir Pontos',
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 15, color: Colors.white),
+                                ),
+                                const Icon(Icons.chevron_right,
+                                    color: Colors.white),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
               ),
             ),
           )
         ])
       ]),
-    );
-  }
-}
-
-class DropdownForm extends StatefulWidget {
-  @override
-  _DropdownFormState createState() => _DropdownFormState();
-}
-
-class _DropdownFormState extends State<DropdownForm> {
-  String? selectedValue;
-
-  final List<String> options = ['1DS', '2DS', '3DS'];
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        DropdownButton<String>(
-          hint: Text('Selecione uma turma', style: GoogleFonts.montserrat(fontSize: 12, color: Colors.black)),
-          value: selectedValue,
-          onChanged: (String? newValue) {
-            setState(() {
-              selectedValue = newValue;
-            });
-          },
-          items: options.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value, style: const TextStyle(color: Colors.black),),
-            );
-          }).toList(),
-        ),
-        if (selectedValue != null) Text('You selected: $selectedValue'),
-      ],
     );
   }
 }

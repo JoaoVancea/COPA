@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class EditProfile extends StatefulWidget {
-  const EditProfile({super.key});
+class CreateUser extends StatefulWidget {
+  const CreateUser({super.key});
 
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  State<CreateUser> createState() => _CreateUserState();
 }
 
-class _EditProfileState extends State<EditProfile> {
+class _CreateUserState extends State<CreateUser> {
   @override
   Widget build(BuildContext context) {
-    double svgWidth = MediaQuery.of(context).size.width * 0.9;
 
     return Scaffold(
       backgroundColor: const Color(0xFF4960F9),
@@ -54,20 +53,13 @@ class _EditProfileState extends State<EditProfile> {
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(
-                    hintText: 'Nicolas',
-                    hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
-                    suffixIcon: IconButton(
-                      icon: const Icon(
-                        Icons.check,
-                        color: Color(0xFFCB3EF9),
-                      ),
-                      onPressed: () {},
-                    ),
-                    enabledBorder: const UnderlineInputBorder(
+                    hintText: 'Seu nome',
+                    hintStyle: TextStyle(color: Color(0xFFC0C4C8)),
+                    enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white)),
-                    focusedBorder: const UnderlineInputBorder(
+                    focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white))),
               ),
               const SizedBox(height: 20),
@@ -75,20 +67,13 @@ class _EditProfileState extends State<EditProfile> {
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(
-                    hintText: 'Barbosa',
-                    hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
-                    suffixIcon: IconButton(
-                      icon: const Icon(
-                        Icons.check,
-                        color: Color(0xFFCB3EF9),
-                      ),
-                      onPressed: () {},
-                    ),
-                    enabledBorder: const UnderlineInputBorder(
+                    hintText: 'Seu sobrenome',
+                    hintStyle: TextStyle(color: Color(0xFFC0C4C8)),
+                    enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white)),
-                    focusedBorder: const UnderlineInputBorder(
+                    focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white))),
               ),
               const SizedBox(height: 20),
@@ -96,20 +81,13 @@ class _EditProfileState extends State<EditProfile> {
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(
-                    hintText: 'nicolasbarbosap@yahoo.com',
-                    hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
-                    suffixIcon: IconButton(
-                      icon: const Icon(
-                        Icons.check,
-                        color: Color(0xFFCB3EF9),
-                      ),
-                      onPressed: () {},
-                    ),
-                    enabledBorder: const UnderlineInputBorder(
+                    hintText: 'Seu email',
+                    hintStyle: TextStyle(color: Color(0xFFC0C4C8)),
+                    enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white)),
-                    focusedBorder: const UnderlineInputBorder(
+                    focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white))),
               ),
               const SizedBox(height: 40),

@@ -2,24 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CreateClass extends StatefulWidget {
-  const CreateClass({super.key});
+class EditUser extends StatefulWidget {
+  const EditUser({super.key});
 
   @override
-  State<CreateClass> createState() => _CreateClassState();
+  State<EditUser> createState() => _EditUserState();
 }
 
-class _CreateClassState extends State<CreateClass> {
+class _EditUserState extends State<EditUser> {
   @override
   Widget build(BuildContext context) {
-    double svgWidth = MediaQuery.of(context).size.width * 0.9;
 
     return Scaffold(
       backgroundColor: const Color(0xFF4960F9),
       body: Stack(children: [
-        Align(
-            alignment: Alignment.topRight,
-            child: SvgPicture.asset('editClass.svg', width: svgWidth)),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: Align(
@@ -38,6 +34,7 @@ class _CreateClassState extends State<CreateClass> {
               Stack(
                 alignment: Alignment.center,
                 children: [
+                  SvgPicture.asset('behindPhoto.svg'),
                   Container(
                     width: 100,
                     height: 100,
@@ -52,45 +49,66 @@ class _CreateClassState extends State<CreateClass> {
                 ],
               ),
               const SizedBox(height: 15),
-              Text('Nome da Turma',
+              Text('Nome',
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              const TextField(
+              TextField(
                 decoration: InputDecoration(
-                    hintText: 'Nome da Turma',
-                    hintStyle: TextStyle(color: Color(0xFFC0C4C8)),
-                    enabledBorder: UnderlineInputBorder(
+                    hintText: 'Nicolas',
+                    hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
+                    suffixIcon: IconButton(
+                      icon: const Icon(
+                        Icons.check,
+                        color: Color(0xFFCB3EF9),
+                      ),
+                      onPressed: () {},
+                    ),
+                    enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white)),
-                    focusedBorder: UnderlineInputBorder(
+                    focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white))),
               ),
               const SizedBox(height: 20),
-              Text('Turma',
+              Text('Sobrenome',
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              const TextField(
+              TextField(
                 decoration: InputDecoration(
-                    hintText: 'Turma',
-                    hintStyle: TextStyle(color: Color(0xFFC0C4C8)),
-                    enabledBorder: UnderlineInputBorder(
+                    hintText: 'Barbosa',
+                    hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
+                    suffixIcon: IconButton(
+                      icon: const Icon(
+                        Icons.check,
+                        color: Color(0xFFCB3EF9),
+                      ),
+                      onPressed: () {},
+                    ),
+                    enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white)),
-                    focusedBorder: UnderlineInputBorder(
+                    focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white))),
               ),
               const SizedBox(height: 20),
-              Text('Sigla (MAX: 3 Letras)',
+              Text('Email',
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              const TextField(
+              TextField(
                 decoration: InputDecoration(
-                    hintText: 'Sigla',
-                    hintStyle: TextStyle(color: Color(0xFFC0C4C8)),
-                    enabledBorder: UnderlineInputBorder(
+                    hintText: 'nicolasbarbosap@yahoo.com',
+                    hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
+                    suffixIcon: IconButton(
+                      icon: const Icon(
+                        Icons.check,
+                        color: Color(0xFFCB3EF9),
+                      ),
+                      onPressed: () {},
+                    ),
+                    enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white)),
-                    focusedBorder: UnderlineInputBorder(
+                    focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white))),
               ),
               const SizedBox(height: 40),

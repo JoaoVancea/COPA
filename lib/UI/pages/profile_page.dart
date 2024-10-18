@@ -1,6 +1,5 @@
 import 'package:copa/UI/pages/change_password.dart';
-import 'package:copa/UI/pages/edit_profile.dart';
-import 'package:copa/UI/pages/edit_class.dart';
+import 'package:copa/UI/pages/edit_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -79,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EditProfile()));
+                              builder: (context) => const EditUser()));
                     },
                     child: Align(
                       alignment: Alignment.centerLeft,

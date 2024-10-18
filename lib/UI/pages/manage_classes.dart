@@ -1,5 +1,6 @@
+import 'package:copa/UI/pages/create_class.dart';
+import 'package:copa/UI/pages/create_user.dart';
 import 'package:copa/UI/pages/edit_class.dart';
-import 'package:copa/UI/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -60,7 +61,9 @@ class _ManageClassesState extends State<ManageClasses> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(28)),
                               minimumSize: const Size(151, 56)),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateClass()));
+                          },
                           child: Text(
                             'Criar Turma',
                             style: GoogleFonts.montserrat(
@@ -221,9 +224,9 @@ class _ManageClassesState extends State<ManageClasses> {
                           children: [
                             Text('Representantes',
                                 style: GoogleFonts.montserrat(fontSize: 15)),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateUser()));
                               },
                               child: Container(
                                 width: 30,

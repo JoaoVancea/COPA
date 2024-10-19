@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,48 @@ class CreateClass extends StatefulWidget {
 }
 
 class _CreateClassState extends State<CreateClass> {
+  bool _isLoading = false;
+
+  final TextEditingController nomeTurmaController = TextEditingController();
+  final TextEditingController turmaController = TextEditingController();
+  final TextEditingController siglaController = TextEditingController();
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> criarTurma() async {
+    if (nomeTurmaController.text.trim().isEmpty ||
+        turmaController.text.trim().isEmpty ||
+        siglaController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Preencha todos os campos')));
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await _firestore.collection('turmas').add({
+        'nome': nomeTurmaController.text.trim(),
+        'turma': turmaController.text.trim().toUpperCase(),
+        'sigla': siglaController.text.trim().toUpperCase()
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Turma criada com sucesso!')));
+
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Erro ao criar turma')));
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double svgWidth = MediaQuery.of(context).size.width * 0.9;
@@ -56,8 +99,9 @@ class _CreateClassState extends State<CreateClass> {
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: nomeTurmaController,
+                decoration: const InputDecoration(
                     hintText: 'Nome da Turma',
                     hintStyle: TextStyle(color: Color(0xFFC0C4C8)),
                     enabledBorder: UnderlineInputBorder(
@@ -70,8 +114,9 @@ class _CreateClassState extends State<CreateClass> {
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: turmaController,
+                decoration: const InputDecoration(
                     hintText: 'Turma',
                     hintStyle: TextStyle(color: Color(0xFFC0C4C8)),
                     enabledBorder: UnderlineInputBorder(
@@ -84,8 +129,9 @@ class _CreateClassState extends State<CreateClass> {
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: siglaController,
+                decoration: const InputDecoration(
                     hintText: 'Sigla',
                     hintStyle: TextStyle(color: Color(0xFFC0C4C8)),
                     enabledBorder: UnderlineInputBorder(
@@ -109,20 +155,21 @@ class _CreateClassState extends State<CreateClass> {
                             shadowColor: Colors.transparent,
                             minimumSize:
                                 const Size(double.infinity, double.infinity)),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Finalizar',
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 20,
-                                    color: const Color(0xFF1937FE))),
-                            const SizedBox(width: 22),
-                            const Icon(Icons.check, color: Color(0xFF1937FE))
-                          ],
-                        )),
+                        onPressed: _isLoading ? null : criarTurma,
+                        child: _isLoading
+                            ? const CircularProgressIndicator()
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Finalizar',
+                                      style: GoogleFonts.montserrat(
+                                          fontSize: 20,
+                                          color: const Color(0xFF1937FE))),
+                                  const SizedBox(width: 22),
+                                  const Icon(Icons.check,
+                                      color: Color(0xFF1937FE))
+                                ],
+                              )),
                   ),
                 ),
               )

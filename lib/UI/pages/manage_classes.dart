@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:copa/UI/pages/create_class.dart';
 import 'package:copa/UI/pages/create_user.dart';
 import 'package:copa/UI/pages/edit_class.dart';
@@ -13,8 +14,30 @@ class ManageClasses extends StatefulWidget {
 }
 
 class _ManageClassesState extends State<ManageClasses> {
-  String? selectedClass = '3DS';
-  final List<String> classes = ['3DS', '2DS', '1DS'];
+  String? _selectedClass;
+  List<String> _classes = [];
+
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchClasses();
+  }
+
+  Future<void> _fetchClasses() async {
+    CollectionReference collection = _firestore.collection('turmas');
+
+    QuerySnapshot snapshot = await collection.get();
+    List<String> fetchedClasses = snapshot.docs.map((doc) {
+      return doc['turma']
+          as String; // Supondo que cada documento tem um campo 'name'
+    }).toList();
+
+    setState(() {
+      _classes = fetchedClasses;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +85,10 @@ class _ManageClassesState extends State<ManageClasses> {
                                   borderRadius: BorderRadius.circular(28)),
                               minimumSize: const Size(151, 56)),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateClass()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const CreateClass()));
                           },
                           child: Text(
                             'Criar Turma',
@@ -80,10 +106,16 @@ class _ManageClassesState extends State<ManageClasses> {
                                   borderRadius: BorderRadius.circular(28)),
                               minimumSize: const Size(151, 56)),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const EditClass()));
+                            if (_selectedClass != null) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const EditClass()));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Selecione uma turma'))
+                              );
+                            }
                           },
                           child: Text(
                             'Editar Turma',
@@ -111,16 +143,22 @@ class _ManageClassesState extends State<ManageClasses> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           DropdownButtonFormField<String>(
-                            value: selectedClass,
-                            items: classes.map((String className) {
+                            hint: Text('Selecione uma turma',
+                                style: GoogleFonts.montserrat(
+                                    fontSize: 12, fontWeight: FontWeight.bold)),
+                            value: _selectedClass,
+                            items: _classes.map((String className) {
                               return DropdownMenuItem<String>(
                                 value: className,
-                                child: Text(className),
+                                child: Text(className,
+                                    style: GoogleFonts.montserrat(
+                                      fontSize: 16,
+                                    )),
                               );
                             }).toList(),
                             onChanged: (String? newValue) {
                               setState(() {
-                                selectedClass = newValue;
+                                _selectedClass = newValue;
                               });
                             },
                             decoration: InputDecoration(
@@ -226,14 +264,19 @@ class _ManageClassesState extends State<ManageClasses> {
                                 style: GoogleFonts.montserrat(fontSize: 15)),
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateUser()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const CreateUser()));
                               },
                               child: Container(
                                 width: 30,
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                        color: const Color(0xFF2743FD), width: 2),
+                                        color: const Color(0xFF2743FD),
+                                        width: 2),
                                     color: Colors.transparent),
                                 child: const Icon(
                                   Icons.add,

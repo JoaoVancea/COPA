@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,6 +24,18 @@ class _CreateUserState extends State<CreateUser> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<String> getDefaultUserPhotoUrl() async {
+    String gsPath = 'gs://copa-e8ad2.appspot.com/defaultAvatar.jpg';
+
+    //Referência ao arquivo no Firebase Storage
+    Reference ref = FirebaseStorage.instance.refFromURL(gsPath);
+
+    //Obtenha a URL pública do arquivo
+    String downloadUrl = await ref.getDownloadURL();
+
+    return downloadUrl;
+  }
+
   Future<void> criarUsuario() async {
     // Validação de campos obrigatórios
     if (nomeController.text.trim().isEmpty ||
@@ -39,6 +52,9 @@ class _CreateUserState extends State<CreateUser> {
     });
 
     try {
+      //Obtenha a URL pública da foto padrão
+      String userPhotoUrl = await getDefaultUserPhotoUrl();
+
       // Criar usuário com email e senha padrão
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -51,7 +67,7 @@ class _CreateUserState extends State<CreateUser> {
         'nome':
             nomeController.text.trim() + ' ' + sobrenomeController.text.trim(),
         'email': emailController.text.trim(),
-        'imgUser': 'defaultAvatar.jpg', // Defina o link da foto padrão aqui
+        'imgUser': userPhotoUrl, // Defina o link da foto padrão aqui
         'isAdmin': isAdmin, // Usando diretamente o booleano
       });
 

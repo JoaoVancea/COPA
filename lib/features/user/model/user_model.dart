@@ -1,26 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class AppUser {
   final String id;
   final String nome;
   final String email;
-  final String senha;
+  final String imgUser;
+  final bool isAdmin;
 
-  User({
+  AppUser({
     required this.id,
     required this.nome,
     required this.email,
-    required this.senha,
+    required this.imgUser,
+    required this.isAdmin
   });
 
   // Método para criar um objeto User a partir de um DocumentSnapshot do Firestore
-  factory User.fromFirestore(DocumentSnapshot doc) {
+  factory AppUser.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    return User(
+    return AppUser(
       id: doc.id,
       nome: data['nome'] ?? '',
       email: data['email'] ?? '',
-      senha: data['senha'] ?? '',
+      imgUser: data['imgUser'] ?? '',
+      isAdmin: data['isAdmin'] ?? false
     );
   }
 
@@ -29,7 +32,8 @@ class User {
     return {
       'nome': nome,
       'email': email,
-      'senha': senha,
+      'imgUser': imgUser,
+      'isAdmin': isAdmin
     };
   }
 }

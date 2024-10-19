@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:copa/features/user/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,13 +35,13 @@ class _LoginScreenState extends State<LoginScreen> {
         .doc(userCredential.user?.uid)
         .get();
 
-    bool isAdmin = userDoc['isAdmin'] ?? false; // Pega o valor de isAdmin
+    AppUser appUser = AppUser.fromFirestore(userDoc);
 
     // Navega para a HomePage e passa a informação se o usuário é admin
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => HomePage(isAdmin: isAdmin), // Passando isAdmin para a HomePage
+        builder: (context) => HomePage(appUser: appUser), // Passando isAdmin para a HomePage
       ),
     );
   } catch (e) {

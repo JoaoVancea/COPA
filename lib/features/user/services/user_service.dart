@@ -7,18 +7,18 @@ class UserService {
   final CollectionReference _usersCollection = FirebaseFirestore.instance.collection('users');
 
   // Obtém todos os usuários
-  Future<List<User>> getUsers() async {
+  Future<List<AppUser>> getUsers() async {
     QuerySnapshot snapshot = await _usersCollection.get();
-    return snapshot.docs.map((doc) => User.fromFirestore(doc)).toList();
+    return snapshot.docs.map((doc) => AppUser.fromFirestore(doc)).toList();
   }
 
   // Cria um novo usuário
-  Future<void> createUser(User user) async {
+  Future<void> createUser(AppUser user) async {
     await _usersCollection.add(user.toFirestore());
   }
 
   // Atualiza um usuário existente
-  Future<void> updateUser(String id, User user) async {
+  Future<void> updateUser(String id, AppUser user) async {
     await _usersCollection.doc(id).update(user.toFirestore());
   }
 

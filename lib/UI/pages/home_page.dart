@@ -1,3 +1,4 @@
+import 'package:copa/features/user/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,9 +8,9 @@ import 'package:copa/UI/pages/profile_page.dart';
 import 'package:copa/UI/widgets/custom_bottom_navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
-  final bool isAdmin; // Adiciona o parâmetro isAdmin
+  AppUser appUser; // Adiciona o parâmetro isAdmin
 
-  const HomePage({super.key, required this.isAdmin}); // Requer o isAdmin
+  HomePage({super.key, required this.appUser}); // Requer o isAdmin
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     // Definir as páginas disponíveis com base no isAdmin
-    _pages = widget.isAdmin
+    _pages = widget.appUser.isAdmin
         ? [
             HomeContent(), // Conteúdo da página inicial (HomePage)
             ManageClasses(), // Página de classes, só visível para admin
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped, // Função callback
-        isAdmin: widget.isAdmin, // Passa isAdmin para o widget CustomBottomNavigationBar
+        isAdmin: widget.appUser.isAdmin, // Passa isAdmin para o widget CustomBottomNavigationBar
       ),
     );
   }

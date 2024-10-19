@@ -1,4 +1,5 @@
 import 'package:copa/UI/pages/change_password.dart';
+import 'package:copa/UI/pages/create_user.dart';
 import 'package:copa/UI/pages/edit_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -65,30 +66,60 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           Center(
             child: Column(children: [
-              Container(
-                  height: 56,
-                  width: 315,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border:
-                          Border.all(color: const Color(0xFF2743FD), width: 1),
-                      borderRadius: BorderRadius.circular(28)),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const EditUser()));
-                    },
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Editar Perfil',
-                        style: GoogleFonts.montserrat(
-                            fontSize: 15, color: const Color(0xFF2743FD)),
-                      ),
-                    ),
-                  )),
+              Center(
+                child: Row(
+                  children: [
+                    Container(
+                        height: 56,
+                        width: 151,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border:
+                                Border.all(color: const Color(0xFF2743FD), width: 1),
+                            borderRadius: BorderRadius.circular(28)),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const EditUser()));
+                          },
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Editar Perfil',
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 15, color: const Color(0xFF2743FD)),
+                            ),
+                          ),
+                        )),
+                        Container(
+                        height: 56,
+                        width: 151,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border:
+                                Border.all(color: const Color(0xFF2743FD), width: 1),
+                            borderRadius: BorderRadius.circular(28)),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const CreateUser()));
+                          },
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Criar usuário',
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 15, color: const Color(0xFF2743FD)),
+                            ),
+                          ),
+                        )),
+                  ],
+                ),
+              ),
               const SizedBox(height: 16),
               Container(
                   height: 56,

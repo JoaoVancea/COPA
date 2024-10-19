@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:copa/UI/pages/assign_user.dart';
 import 'package:copa/UI/pages/create_class.dart';
-import 'package:copa/UI/pages/create_user.dart';
 import 'package:copa/UI/pages/edit_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,7 +17,7 @@ class _ManageClassesState extends State<ManageClasses> {
   String? _selectedClass;
   List<String> _classes = [];
 
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -113,7 +113,7 @@ class _ManageClassesState extends State<ManageClasses> {
                                       builder: (context) => const EditClass()));
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Selecione uma turma'))
+                                const SnackBar(content: Text('Selecione uma turma'))
                               );
                             }
                           },
@@ -268,7 +268,7 @@ class _ManageClassesState extends State<ManageClasses> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const CreateUser()));
+                                            const AssignUser()));
                               },
                               child: Container(
                                 width: 30,

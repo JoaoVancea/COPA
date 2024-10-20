@@ -1,18 +1,29 @@
 import 'package:copa/UI/pages/change_password.dart';
 import 'package:copa/UI/pages/create_user.dart';
 import 'package:copa/UI/pages/edit_user.dart';
+import 'package:copa/features/user/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  AppUser appUser;
+
+  ProfilePage({super.key, required this.appUser});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late String userPhotoUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    userPhotoUrl = widget.appUser.imgUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +47,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 32),
                     Row(
                       children: [
-                        Image.asset('luko.png'),
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.network(userPhotoUrl,
+                                width: 65, height: 65)),
                         const SizedBox(width: 12),
                         Text('Lucas Gonzales',
                             style: GoogleFonts.aBeeZee(
@@ -74,8 +88,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: 151,
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            border:
-                                Border.all(color: const Color(0xFF2743FD), width: 1),
+                            border: Border.all(
+                                color: const Color(0xFF2743FD), width: 1),
                             borderRadius: BorderRadius.circular(28)),
                         child: ElevatedButton(
                           onPressed: () {
@@ -93,13 +107,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         )),
-                        Container(
+                    Container(
                         height: 56,
                         width: 151,
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            border:
-                                Border.all(color: const Color(0xFF2743FD), width: 1),
+                            border: Border.all(
+                                color: const Color(0xFF2743FD), width: 1),
                             borderRadius: BorderRadius.circular(28)),
                         child: ElevatedButton(
                           onPressed: () {

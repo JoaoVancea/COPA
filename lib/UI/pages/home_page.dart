@@ -32,12 +32,12 @@ class _HomePageState extends State<HomePage> {
             HomeContent(), // Conteúdo da página inicial (HomePage)
             ManageClasses(), // Página de classes, só visível para admin
             EventsPage(),
-            ProfilePage(),
+            ProfilePage(appUser: widget.appUser),
           ]
         : [
             HomeContent(),
             EventsPage(),
-            ProfilePage(), // Página para usuários normais
+            ProfilePage(appUser: widget.appUser), // Página para usuários normais
           ];
   }
 

@@ -1,16 +1,16 @@
-import 'package:copa/features/user/model/user_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:copa/UI/pages/events_page.dart';
 import 'package:copa/UI/pages/manage_classes.dart';
 import 'package:copa/UI/pages/profile_page.dart';
 import 'package:copa/UI/widgets/custom_bottom_navigation_bar.dart';
+import 'package:copa/features/user/model/user_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
-  AppUser appUser; // Adiciona o parâmetro isAdmin
+  final AppUser? appUser; // Parâmetro pode ser nulo
 
-  HomePage({super.key, required this.appUser}); // Requer o isAdmin
+  HomePage({super.key, required this.appUser});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -18,27 +18,33 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-
-  // Função para mapear o índice da barra de navegação às páginas
-  late List<Widget> _pages; // Lista de páginas pode mudar conforme o isAdmin
+  late List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
 
-    // Definir as páginas disponíveis com base no isAdmin
-    _pages = widget.appUser.isAdmin
-        ? [
-            HomeContent(), // Conteúdo da página inicial (HomePage)
-            ManageClasses(), // Página de classes, só visível para admin
-            EventsPage(),
-            ProfilePage(appUser: widget.appUser),
-          ]
-        : [
-            HomeContent(),
-            EventsPage(),
-            ProfilePage(appUser: widget.appUser), // Página para usuários normais
-          ];
+    // Definir páginas com base na condição do appUser
+    if (widget.appUser != null && widget.appUser!.isAdmin != null) {
+      _pages = widget.appUser!.isAdmin
+          ? [
+              HomeContent(),
+              ManageClasses(),
+              EventsPage(),
+              ProfilePage(appUser: widget.appUser!),
+            ]
+          : [
+              HomeContent(),
+              EventsPage(),
+              ProfilePage(appUser: widget.appUser!),
+            ];
+    } else {
+      // Usuário deslogado
+      _pages = [
+        HomeContent(),
+        ProfilePage(appUser: widget.appUser), // Página para usuários anônimos
+      ];
+    }
   }
 
   void _onItemTapped(int index) {
@@ -50,15 +56,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex], // Exibe a página correspondente
+      body: _pages[_selectedIndex],
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped, // Função callback
-        isAdmin: widget.appUser.isAdmin, // Passa isAdmin para o widget CustomBottomNavigationBar
+        onItemTapped: _onItemTapped,
+        isAdmin: widget.appUser?.isAdmin, // Pode ser nulo
       ),
     );
   }
 }
+
 
 class HomeContent extends StatelessWidget {
   @override

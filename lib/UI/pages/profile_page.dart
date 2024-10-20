@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatefulWidget {
-  AppUser appUser;
+  AppUser? appUser;
 
   ProfilePage({super.key, required this.appUser});
 
@@ -16,12 +16,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late AppUser appUser;
   late String userPhotoUrl;
+  late String userNome;
 
   @override
   void initState() {
     super.initState();
-    userPhotoUrl = widget.appUser.imgUser;
+    userPhotoUrl = widget.appUser!.imgUser;
+    userNome = widget.appUser!.nome;
+    appUser = widget.appUser!;
   }
 
   @override
@@ -52,27 +56,41 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Image.network(userPhotoUrl,
                                 width: 65, height: 65)),
                         const SizedBox(width: 12),
-                        Text('Lucas Gonzales',
+                        Text(userNome,
                             style: GoogleFonts.aBeeZee(
                                 fontSize: 20,
                                 fontStyle: FontStyle.italic,
                                 color: const Color(0xFF2743FD)))
                       ],
                     ),
-                    const SizedBox(height: 40),
-                    Text('Função', style: GoogleFonts.roboto(fontSize: 14)),
-                    const SizedBox(height: 15),
-                    Text('Professor',
-                        style: GoogleFonts.aBeeZee(
-                            fontSize: 14, color: const Color(0xFF2743FD))),
-                    const SizedBox(height: 32),
-                    Text('Tipo de Conta',
-                        style: GoogleFonts.roboto(fontSize: 14)),
-                    const SizedBox(height: 15),
-                    Text('Administrador',
-                        style: GoogleFonts.aBeeZee(
-                            fontSize: 14, color: const Color(0xFF2743FD))),
-                    const SizedBox(height: 50),
+                    widget.appUser!.isAdmin ? 
+                    Column(
+                      children: [
+                        const SizedBox(height: 40),
+                        Text('Função', style: GoogleFonts.roboto(fontSize: 14)),
+                        const SizedBox(height: 15),
+                        Text('Professor',
+                            style: GoogleFonts.aBeeZee(
+                                fontSize: 14, color: const Color(0xFF2743FD))),
+                        const SizedBox(height: 32),
+                        Text('Tipo de Conta',
+                            style: GoogleFonts.roboto(fontSize: 14)),
+                        const SizedBox(height: 15),
+                        Text('Administrador',
+                            style: GoogleFonts.aBeeZee(
+                                fontSize: 14, color: const Color(0xFF2743FD))),
+                        const SizedBox(height: 50),
+                      ],
+                    ) : Column(
+                      children: [
+                        const SizedBox(height: 40),
+                        Text('Função', style: GoogleFonts.roboto(fontSize: 14)),
+                        const SizedBox(height: 15),
+                        Text('Representante',
+                            style: GoogleFonts.aBeeZee(
+                                fontSize: 14, color: const Color(0xFF2743FD))),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -96,7 +114,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const EditUser()));
+                                    builder: (context) =>
+                                        EditUser(appUser: appUser)));
                           },
                           child: Align(
                             alignment: Alignment.centerLeft,

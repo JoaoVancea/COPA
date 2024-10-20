@@ -333,7 +333,7 @@ class _ManageClassesState extends State<ManageClasses> {
                                 shrinkWrap:
                                     true, // Permite que o ListView se ajuste ao conteúdo
                                 physics:
-                                   const NeverScrollableScrollPhysics(), // Evita rolagem dentro de rolagem
+                                    const NeverScrollableScrollPhysics(), // Evita rolagem dentro de rolagem
                                 itemCount: snapshot.data!.docs.length,
                                 itemBuilder: (context, index) {
                                   //Obter o documento no índice atual
@@ -372,7 +372,7 @@ class _ManageClassesState extends State<ManageClasses> {
 
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 16.0),
+                                            vertical: 8.0),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -389,14 +389,13 @@ class _ManageClassesState extends State<ManageClasses> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      userName,
-                                                      style: const TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
+                                                    Text(userName,
+                                                        style: GoogleFonts
+                                                            .montserrat(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
                                                     Row(
                                                       children: [
                                                         // Indicador de status ativo/inativo com ponto colorido
@@ -404,8 +403,8 @@ class _ManageClassesState extends State<ManageClasses> {
                                                           Icons.circle,
                                                           size: 12,
                                                           color: ativo
-                                                              ? Colors.green
-                                                              : Colors.red,
+                                                              ? const Color(0xFF6FFD84)
+                                                              : const Color(0xFFFF6262)
                                                         ),
                                                         const SizedBox(
                                                             width: 4),
@@ -416,8 +415,8 @@ class _ManageClassesState extends State<ManageClasses> {
                                                           style: TextStyle(
                                                             fontSize: 14,
                                                             color: ativo
-                                                                ? Colors.green
-                                                                : Colors.red,
+                                                                ? const Color(0xFF6FFD84)
+                                                                : const Color(0xFFFF6262)
                                                           ),
                                                         ),
                                                       ],
@@ -429,9 +428,7 @@ class _ManageClassesState extends State<ManageClasses> {
                                             IconButton(
                                               icon: const Icon(Icons.edit,
                                                   color: Colors.grey),
-                                              onPressed: () {
-                                                
-                                              },
+                                              onPressed: () {},
                                             ),
                                           ],
                                         ),

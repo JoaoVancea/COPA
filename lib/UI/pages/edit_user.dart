@@ -1,15 +1,20 @@
+import 'package:copa/features/user/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EditUser extends StatefulWidget {
-  const EditUser({super.key});
+  AppUser appUser;
+  EditUser({super.key, required this.appUser});
 
   @override
   State<EditUser> createState() => _EditUserState();
 }
 
 class _EditUserState extends State<EditUser> {
+  final TextEditingController nomeController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
 
@@ -53,30 +58,10 @@ class _EditUserState extends State<EditUser> {
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              TextField(
+              TextFormField(
+                initialValue: widget.appUser.nome,
                 decoration: InputDecoration(
                     hintText: 'Nicolas',
-                    hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
-                    suffixIcon: IconButton(
-                      icon: const Icon(
-                        Icons.check,
-                        color: Color(0xFFCB3EF9),
-                      ),
-                      onPressed: () {},
-                    ),
-                    enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white)),
-                    focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white))),
-              ),
-              const SizedBox(height: 20),
-              Text('Sobrenome',
-                  style: GoogleFonts.roboto(
-                      fontSize: 14, color: const Color(0xFF80E0FF))),
-              const SizedBox(height: 10),
-              TextField(
-                decoration: InputDecoration(
-                    hintText: 'Barbosa',
                     hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
                     suffixIcon: IconButton(
                       icon: const Icon(
@@ -95,7 +80,8 @@ class _EditUserState extends State<EditUser> {
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              TextField(
+              TextFormField(
+                initialValue: widget.appUser.email,
                 decoration: InputDecoration(
                     hintText: 'nicolasbarbosap@yahoo.com',
                     hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),

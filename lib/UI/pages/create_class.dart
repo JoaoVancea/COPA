@@ -36,7 +36,8 @@ class _CreateClassState extends State<CreateClass> {
       await _firestore.collection('turmas').add({
         'nome': nomeTurmaController.text.trim(),
         'turma': turmaController.text.trim().toUpperCase(),
-        'sigla': siglaController.text.trim().toUpperCase()
+        'sigla': siglaController.text.trim().toUpperCase(),
+        'ativo': true
       });
 
       ScaffoldMessenger.of(context).showSnackBar(

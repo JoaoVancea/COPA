@@ -1,3 +1,4 @@
+import 'package:copa/UI/pages/avaliar_eventos.dart';
 import 'package:copa/features/user/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +111,22 @@ class _EventsPageState extends State<EventsPage> {
           return const Center(child: Text("Nenhum evento publicado."));
         }
 
-        return _buildEventList(events, isUser: true);
+        // Ordena os eventos para que os "em andamento" (valor == 0) fiquem no topo
+        events.sort((a, b) {
+          final int valorA = a['valor'];
+          final int valorB = b['valor'];
+
+          // Coloca os eventos com valor 0 (em andamento) no topo
+          if (valorA == 0 && valorB != 0) {
+            return -1; // Evento "em andamento" vem primeiro
+          } else if (valorA != 0 && valorB == 0) {
+            return 1; // Evento já avaliado vem depois
+          }
+          return 0; // Deixa os demais eventos na ordem original
+        });
+
+        return _buildEventList(events,
+            isUser: true); // Usa a função existente para exibir os eventos
       },
     );
   }
@@ -222,6 +238,7 @@ class _EventsPageState extends State<EventsPage> {
   }
 
   // Função genérica para exibir os eventos (tanto para admin quanto usuário)
+  // Função genérica para exibir os eventos (tanto para admin quanto usuário)
   Widget _buildEventList(List<QueryDocumentSnapshot> events,
       {required bool isUser}) {
     return ListView.builder(
@@ -230,7 +247,8 @@ class _EventsPageState extends State<EventsPage> {
         final event = events[index];
         final titulo = event['titulo'];
         final descricao = event['descricao'];
-        final int valor = event['valor'];
+        final int valor = event['valor']; // Pontuação do evento
+        final String eventoId = event.id; // ID do evento para navegação
         final Timestamp? timestamp = event['dataCriacao'] as Timestamp?;
         DateTime? date = timestamp != null ? timestamp.toDate() : null;
 
@@ -253,76 +271,123 @@ class _EventsPageState extends State<EventsPage> {
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            elevation: 2,
-            child: ListTile(
-              contentPadding: const EdgeInsets.all(16),
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  widget.appUser.imgUser, // Usa a imagem do aluno
-                ),
-                radius: 25,
-              ),
-              title: Text(
-                titulo,
-                style: GoogleFonts.roboto(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    descricao,
-                    style: GoogleFonts.roboto(
-                      fontSize: 14,
-                      color: Colors.grey,
+          child: GestureDetector(
+            onTap: () {
+              // **Verifica se o evento já foi avaliado**
+              if (widget.appUser.isAdmin && valor == 0) {
+                // Permite a navegação para avaliação somente se o evento estiver pendente
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AvaliarEventoPage(
+                      eventoId: eventoId,
+                      appUser: widget.appUser, // Passa o admin atual
                     ),
                   ),
-                  if (isUser) ...[
-                    const SizedBox(height: 8),
+                );
+              } else if (!widget.appUser.isAdmin) {
+                // Exibe uma mensagem caso o usuário tente clicar em um evento (não permitido)
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text("Você não pode avaliar eventos.")),
+                );
+              }
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              elevation: 2,
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(16),
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    widget.appUser.imgUser, // Usa a imagem do aluno
+                  ),
+                  radius: 25,
+                ),
+                title: Text(
+                  titulo,
+                  style: GoogleFonts.roboto(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      status,
+                      descricao,
                       style: GoogleFonts.roboto(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: statusColor,
+                        fontSize: 14,
+                        color: Colors.grey,
                       ),
                     ),
-                  ],
-                ],
-              ),
-              trailing: date != null
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
+                    if (isUser) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        status,
+                        style: GoogleFonts.roboto(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: statusColor,
+                        ),
+                      ),
+                    ],
+                    if (!isUser && valor != 0) ...[
+                      // Exibe a pontuação ou se foi negado somente para o admin e se o valor for diferente de 0
+                      const SizedBox(height: 8),
+                      if (valor == -1)
+                        // Exibe "Evento negado" se o valor for -1
                         Text(
-                          '${date.hour}:${date.minute.toString().padLeft(2, '0')}',
+                          'Evento negado',
                           style: GoogleFonts.roboto(
                             fontSize: 14,
-                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
                           ),
-                        ),
+                        )
+                      else
+                        // Exibe a pontuação para valores maiores que 0
                         Text(
-                          '${date.day}/${date.month.toString().padLeft(2, '0')}',
+                          'Pontuação: $valor',
                           style: GoogleFonts.roboto(
-                            fontSize: 12,
-                            color: Colors.grey,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue, // Exibe a pontuação em azul
                           ),
                         ),
-                      ],
-                    )
-                  : const Text(
-                      "Sem data",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.red,
+                    ],
+                  ],
+                ),
+                trailing: date != null
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            '${date.hour}:${date.minute.toString().padLeft(2, '0')}',
+                            style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Text(
+                            '${date.day}/${date.month.toString().padLeft(2, '0')}',
+                            style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      )
+                    : const Text(
+                        "Sem data",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.red,
+                        ),
                       ),
-                    ),
+              ),
             ),
           ),
         );

@@ -25,17 +25,17 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     // Definir páginas com base na condição do appUser
-    if (widget.appUser != null && widget.appUser!.isAdmin != null) {
+    if (widget.appUser != null) {
       _pages = widget.appUser!.isAdmin
           ? [
               HomeContent(),
               ManageClasses(),
-              EventsPage(),
+              EventsPage(appUser: widget.appUser!,),
               ProfilePage(appUser: widget.appUser!),
             ]
           : [
               HomeContent(),
-              EventsPage(),
+              EventsPage(appUser: widget.appUser!,),
               ProfilePage(appUser: widget.appUser!),
             ];
     } else {

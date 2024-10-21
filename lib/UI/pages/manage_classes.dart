@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:copa/UI/pages/assign_user.dart';
 import 'package:copa/UI/pages/create_class.dart';

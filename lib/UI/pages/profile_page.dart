@@ -1,6 +1,5 @@
 import 'package:copa/UI/pages/change_password.dart';
 import 'package:copa/UI/pages/create_user.dart';
-import 'package:copa/UI/pages/edit_user.dart';
 import 'package:copa/UI/pages/home_page.dart';
 import 'package:copa/UI/pages/login_page.dart';
 import 'package:copa/features/user/model/user_model.dart';
@@ -109,6 +108,12 @@ class _ProfilePageState extends State<ProfilePage> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text('Email', style: GoogleFonts.roboto(fontSize: 14)),
+            const SizedBox(height: 15),
+            Text(widget.appUser!.email,
+                style: GoogleFonts.aBeeZee(
+                    fontSize: 14, color: const Color(0xFF2743FD))),
+            const SizedBox(height: 15),
             Text('Função', style: GoogleFonts.roboto(fontSize: 14)),
             const SizedBox(height: 15),
             Text('Professor',
@@ -127,6 +132,12 @@ class _ProfilePageState extends State<ProfilePage> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text('Email', style: GoogleFonts.roboto(fontSize: 14)),
+            const SizedBox(height: 15),
+            Text(widget.appUser!.email,
+                style: GoogleFonts.aBeeZee(
+                    fontSize: 14, color: const Color(0xFF2743FD))),
+            const SizedBox(height: 15),
             Text('Função', style: GoogleFonts.roboto(fontSize: 14)),
             const SizedBox(height: 15),
             Text('Representante',
@@ -160,42 +171,18 @@ class _ProfilePageState extends State<ProfilePage> {
       return Center(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildActionButton(
-                  label: 'Editar Perfil',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditUser(appUser: appUser),
-                      ),
-                    ).then((result) {
-                      if (result == true) {
-                        // Atualize os dados do usuário aqui
-                        setState(() {
-                          userNome = appUser
-                              .nome; // Atualize o nome ou outros detalhes aqui
-                        });
-                      }
-                    });
-                  },
-                  width: 150, // Definir a largura do botão
-                ),
-                const SizedBox(width: 15),
-                _buildActionButton(
-                  label: 'Criar usuário',
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CreateUser()));
-                  },
-                  width: 150, // Definir a largura do botão
-                ),
-              ],
-            ),
+            const SizedBox(width: 15),
+            widget.appUser!.isAdmin
+                ? _buildFullWidthButton(
+                    label: 'Criar usuário',
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const CreateUser()));
+                    },
+                  )
+                : const SizedBox.shrink(),
             const SizedBox(height: 16),
             _buildFullWidthButton(
               label: 'Mudar Senha',

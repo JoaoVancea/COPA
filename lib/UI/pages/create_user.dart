@@ -176,7 +176,7 @@ class _CreateUserState extends State<CreateUser> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('Estado',
+                  Text('Admin',
                       style: GoogleFonts.roboto(
                           color: const Color(0xFF80E0FF), fontSize: 14)),
                   Row(
@@ -191,7 +191,7 @@ class _CreateUserState extends State<CreateUser> {
                           });
                         },
                       ),
-                      const Text('Ativo'),
+                      const Text('true'),
                       Radio<bool>(
                         value: false,
                         groupValue: isAdmin,
@@ -201,7 +201,7 @@ class _CreateUserState extends State<CreateUser> {
                           });
                         },
                       ),
-                      const Text('Inativo')
+                      const Text('false')
                     ],
                   )
                 ],

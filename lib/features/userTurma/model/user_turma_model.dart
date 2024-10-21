@@ -20,7 +20,7 @@ class UserTurma {
       userId: data['user_id'] ?? '',
       turmaId: data['turma_id'] ?? '',
       funcaoId: data['funcao_id'] ?? '',
-      statusAtivo: data['status'] ?? false,
+      statusAtivo: data['ativo'] ?? false,
     );
   }
 

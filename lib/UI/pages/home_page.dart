@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
               ProfilePage(appUser: widget.appUser!),
             ];
     } else {
-      // Usuário deslogado
+      // Usuário convidado
       _pages = [
         HomeContent(),
         ProfilePage(appUser: widget.appUser), // Página para usuários anônimos

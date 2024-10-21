@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:copa/features/user/model/user_model.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,6 +17,32 @@ class _EditUserState extends State<EditUser> {
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  initState() {
+    super.initState();
+    emailController.text = widget.appUser.email;
+    nomeController.text = widget.appUser.nome;
+  }
+
+  Future<void> _updateData() async {
+    try {
+      await _firestore.collection('users').doc(widget.appUser.id).update({
+        'nome': nomeController.text.trim()
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Perfil atualizado com sucesso!'))
+      );
+
+      Navigator.pop(context, true);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erro ao atualizar perfil'))
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -59,7 +87,7 @@ class _EditUserState extends State<EditUser> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextFormField(
-                initialValue: widget.appUser.nome,
+                controller: nomeController,
                 decoration: InputDecoration(
                     hintText: 'Nicolas',
                     hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
@@ -81,7 +109,8 @@ class _EditUserState extends State<EditUser> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextFormField(
-                initialValue: widget.appUser.email,
+                readOnly: true,
+                controller: emailController,
                 decoration: InputDecoration(
                     hintText: 'nicolasbarbosap@yahoo.com',
                     hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
@@ -114,7 +143,7 @@ class _EditUserState extends State<EditUser> {
                             minimumSize:
                                 const Size(double.infinity, double.infinity)),
                         onPressed: () {
-                          Navigator.pop(context);
+                          _updateData();
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

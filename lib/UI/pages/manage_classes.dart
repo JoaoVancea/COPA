@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:copa/UI/pages/assign_user.dart';
 import 'package:copa/UI/pages/create_class.dart';
 import 'package:copa/UI/pages/edit_class.dart';
+import 'package:copa/UI/pages/edit_user_turma.dart';
 import 'package:copa/features/turma/model/turma_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -112,7 +113,8 @@ class _ManageClassesState extends State<ManageClasses> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const EditClass()));
+                                      builder: (context) => EditClass(
+                                          turma: _selectedClass as Turma)));
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -341,6 +343,7 @@ class _ManageClassesState extends State<ManageClasses> {
 
                                   //Extrair os dados do documento
                                   var userId = userDocument['userId'];
+                                  var userTurmaId = userDocument.id;
 
                                   return FutureBuilder(
                                     future: _firestore
@@ -399,13 +402,13 @@ class _ManageClassesState extends State<ManageClasses> {
                                                     Row(
                                                       children: [
                                                         // Indicador de status ativo/inativo com ponto colorido
-                                                        Icon(
-                                                          Icons.circle,
-                                                          size: 12,
-                                                          color: ativo
-                                                              ? const Color(0xFF6FFD84)
-                                                              : const Color(0xFFFF6262)
-                                                        ),
+                                                        Icon(Icons.circle,
+                                                            size: 12,
+                                                            color: ativo
+                                                                ? const Color(
+                                                                    0xFF6FFD84)
+                                                                : const Color(
+                                                                    0xFFFF6262)),
                                                         const SizedBox(
                                                             width: 4),
                                                         Text(
@@ -413,11 +416,12 @@ class _ManageClassesState extends State<ManageClasses> {
                                                               ? 'Ativo'
                                                               : 'Inativo',
                                                           style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: ativo
-                                                                ? const Color(0xFF6FFD84)
-                                                                : const Color(0xFFFF6262)
-                                                          ),
+                                                              fontSize: 14,
+                                                              color: ativo
+                                                                  ? const Color(
+                                                                      0xFF6FFD84)
+                                                                  : const Color(
+                                                                      0xFFFF6262)),
                                                         ),
                                                       ],
                                                     ),
@@ -428,7 +432,17 @@ class _ManageClassesState extends State<ManageClasses> {
                                             IconButton(
                                               icon: const Icon(Icons.edit,
                                                   color: Colors.grey),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EditUserTurma(
+                                                              userId: userId,
+                                                              userTurmaId:
+                                                                  userTurmaId,
+                                                            )));
+                                              },
                                             ),
                                           ],
                                         ),

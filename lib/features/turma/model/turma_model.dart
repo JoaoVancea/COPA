@@ -5,13 +5,15 @@ class Turma {
   final String nome;
   final bool ativo;
   final String sigla;
+  final String turma;
 
 
   Turma({
     required this.id,
     required this.nome,
     required this.ativo,
-    required this.sigla});
+    required this.sigla,
+    required this.turma});
 
   // Método para criar um objeto Turma a partir de um DocumentSnapshot do Firestore
   factory Turma.fromFirestore(DocumentSnapshot doc) {
@@ -20,7 +22,8 @@ class Turma {
       id: doc.id,
       nome: data['nome'] ?? '',
       ativo: data['ativo'] ?? false,
-      sigla: data['sigla'] ?? ''
+      sigla: data['sigla'] ?? '',
+      turma: data['turma'] ?? ''
     );
   }
 

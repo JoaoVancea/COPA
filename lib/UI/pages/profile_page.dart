@@ -1,8 +1,10 @@
 import 'package:copa/UI/pages/change_password.dart';
 import 'package:copa/UI/pages/create_user.dart';
 import 'package:copa/UI/pages/edit_user.dart';
+import 'package:copa/UI/pages/home_page.dart';
 import 'package:copa/UI/pages/login_page.dart';
 import 'package:copa/features/user/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late AppUser appUser;
   late String userPhotoUrl;
   late String userNome;
+  final FirebaseAuth _authService = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -88,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildUserInfoSection() {
     // Verificar se appUser é null antes de acessar isAdmin
-    if(widget.appUser == null || widget.appUser!.id == 'anonymous') {
+    if (widget.appUser == null || widget.appUser!.id == 'anonymous') {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -103,110 +106,126 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     } else {
       if (widget.appUser != null && widget.appUser!.isAdmin) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Função', style: GoogleFonts.roboto(fontSize: 14)),
-          const SizedBox(height: 15),
-          Text('Professor',
-              style: GoogleFonts.aBeeZee(
-                  fontSize: 14, color: const Color(0xFF2743FD))),
-          const SizedBox(height: 32),
-          Text('Tipo de Conta', style: GoogleFonts.roboto(fontSize: 14)),
-          const SizedBox(height: 15),
-          Text('Administrador',
-              style: GoogleFonts.aBeeZee(
-                  fontSize: 14, color: const Color(0xFF2743FD))),
-          const SizedBox(height: 50),
-        ],
-      );
-    } else {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Função', style: GoogleFonts.roboto(fontSize: 14)),
-          const SizedBox(height: 15),
-          Text('Representante',
-              style: GoogleFonts.aBeeZee(
-                  fontSize: 14, color: const Color(0xFF2743FD))),
-          const SizedBox(height: 35)
-        ],
-      );
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Função', style: GoogleFonts.roboto(fontSize: 14)),
+            const SizedBox(height: 15),
+            Text('Professor',
+                style: GoogleFonts.aBeeZee(
+                    fontSize: 14, color: const Color(0xFF2743FD))),
+            const SizedBox(height: 15),
+            Text('Tipo de Conta', style: GoogleFonts.roboto(fontSize: 14)),
+            const SizedBox(height: 15),
+            Text('Administrador',
+                style: GoogleFonts.aBeeZee(
+                    fontSize: 14, color: const Color(0xFF2743FD))),
+            const SizedBox(height: 50),
+          ],
+        );
+      } else {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Função', style: GoogleFonts.roboto(fontSize: 14)),
+            const SizedBox(height: 15),
+            Text('Representante',
+                style: GoogleFonts.aBeeZee(
+                    fontSize: 14, color: const Color(0xFF2743FD))),
+            const SizedBox(height: 35)
+          ],
+        );
+      }
     }
-    }
-    
   }
 
   Widget _buildActionButtons(BuildContext context) {
-    if(widget.appUser == null || widget.appUser!.id == 'anonymous') {
+    if (widget.appUser == null || widget.appUser!.id == 'anonymous') {
       return Center(
         child: Column(
           children: [
             _buildFullWidthButton(
-            label: 'Conectar',
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-            },
-            icon: const Icon(Icons.logout, color: Color(0xFF2743FD), size: 25),
-          ),
+              label: 'Conectar',
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
+              },
+              icon:
+                  const Icon(Icons.logout, color: Color(0xFF2743FD), size: 25),
+            ),
           ],
         ),
       );
     } else {
       return Center(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildActionButton(
-                label: 'Editar Perfil',
-                onPressed: () {
-                  Navigator.push(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildActionButton(
+                  label: 'Editar Perfil',
+                  onPressed: () {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => EditUser(appUser: appUser)));
-                },
-              ),
-              _buildActionButton(
-                label: 'Criar usuário',
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CreateUser()));
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          _buildFullWidthButton(
-            label: 'Mudar Senha',
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ChangePassword()));
-            },
-          ),
-          const SizedBox(height: 16),
-          _buildFullWidthButton(
-            label: 'Desconectar',
-            onPressed: () {
-              _logoutConfirmation(context);
-            },
-            icon: const Icon(Icons.logout, color: Color(0xFF2743FD), size: 25),
-          ),
-        ],
-      ),
-    );
+                        builder: (context) => EditUser(appUser: appUser),
+                      ),
+                    ).then((result) {
+                      if (result == true) {
+                        // Atualize os dados do usuário aqui
+                        setState(() {
+                          userNome = appUser
+                              .nome; // Atualize o nome ou outros detalhes aqui
+                        });
+                      }
+                    });
+                  },
+                  width: 150, // Definir a largura do botão
+                ),
+                const SizedBox(width: 15),
+                _buildActionButton(
+                  label: 'Criar usuário',
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CreateUser()));
+                  },
+                  width: 150, // Definir a largura do botão
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _buildFullWidthButton(
+              label: 'Mudar Senha',
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ChangePassword()));
+              },
+            ),
+            const SizedBox(height: 16),
+            _buildFullWidthButton(
+              label: 'Desconectar',
+              onPressed: () {
+                _logoutConfirmation(context);
+              },
+              icon:
+                  const Icon(Icons.logout, color: Color(0xFF2743FD), size: 25),
+            ),
+          ],
+        ),
+      );
     }
-    
   }
 
   Widget _buildActionButton(
-      {required String label, required VoidCallback onPressed}) {
+      {required String label,
+      required VoidCallback onPressed,
+      double width = 151}) {
     return Container(
       height: 56,
-      width: 151,
+      width: width, // Use a largura passada por parâmetro
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: const Color(0xFF2743FD), width: 1),
@@ -270,6 +289,8 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 void _logoutConfirmation(BuildContext context) {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -292,9 +313,13 @@ void _logoutConfirmation(BuildContext context) {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildLogoutButton(context, 'Sim', () {
+                _buildLogoutButton(context, 'Sim', () async {
                   // Adicionar funcionalidade de logout
-                  Navigator.of(context).pop();
+                  await _auth.signOut();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomePage(appUser: null)));
                 }),
                 _buildLogoutButton(context, 'Não', () {
                   Navigator.of(context).pop();

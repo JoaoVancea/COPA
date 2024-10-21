@@ -1,15 +1,21 @@
+import 'package:copa/features/turma/model/turma_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EditClass extends StatefulWidget {
-  const EditClass({super.key});
+  Turma turma;
+  EditClass({super.key, required this.turma});
 
   @override
   State<EditClass> createState() => _EditClassState();
 }
 
 class _EditClassState extends State<EditClass> {
+  final TextEditingController nomeTurma = TextEditingController();
+  final TextEditingController classeTurma = TextEditingController();
+  final TextEditingController siglaTurma = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double svgWidth = MediaQuery.of(context).size.width * 0.9;
@@ -56,7 +62,8 @@ class _EditClassState extends State<EditClass> {
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              TextField(
+              TextFormField(
+                initialValue: widget.turma.nome,
                 decoration: InputDecoration(
                     hintText: 'Garotos de Programa',
                     hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
@@ -77,7 +84,8 @@ class _EditClassState extends State<EditClass> {
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              TextField(
+              TextFormField(
+                initialValue: widget.turma.turma,
                 decoration: InputDecoration(
                     hintText: '3DS',
                     hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),
@@ -98,7 +106,8 @@ class _EditClassState extends State<EditClass> {
                   style: GoogleFonts.roboto(
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
-              TextField(
+              TextFormField(
+                initialValue: widget.turma.sigla,
                 decoration: InputDecoration(
                     hintText: 'GPS',
                     hintStyle: const TextStyle(color: Color(0xFFC0C4C8)),

@@ -41,6 +41,25 @@ class _ManageClassesState extends State<ManageClasses> {
     });
   }
 
+  Future<int> _getTotalPointsForClass(String turmaId) async {
+  QuerySnapshot snapshot = await _firestore
+      .collection('evento')
+      .where('turmaId', isEqualTo: turmaId)
+      .get();
+
+  // Filtra eventos com valor negativo
+  int totalPoints = snapshot.docs.fold(0, (sum, doc) {
+    int valor = doc['valor'];
+    if (valor >= 0) {
+      return sum + valor;
+    } else {
+      return sum;
+    }
+  });
+
+  return totalPoints;
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -193,21 +212,87 @@ class _ManageClassesState extends State<ManageClasses> {
                                     ),
                                   ),
                                   const SizedBox(height: 30),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(40),
-                                        border: Border.all(
-                                            color: const Color(0xFFF2F4F8))),
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                          filled: true,
-                                          fillColor: Colors.transparent,
-                                          border: InputBorder.none,
-                                          hintText: 'Evento',
-                                          hintStyle: GoogleFonts.montserrat(
-                                              color: const Color(0xFF979797))),
-                                    ),
+                                  FutureBuilder<int>(
+                                    future: _getTotalPointsForClass(
+                                        _selectedClass!.id),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(40),
+                                            border: Border.all(
+                                                color: const Color(0xFFF2F4F8)),
+                                          ),
+                                          child: TextField(
+                                            enabled: false,
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: Colors.transparent,
+                                              border: InputBorder.none,
+                                              hintText:
+                                                  'Carregando total de pontos...',
+                                              hintStyle:
+                                                  GoogleFonts.montserrat(
+                                                      color: const Color(
+                                                          0xFF979797)),
+                                            ),
+                                          ),
+                                        );
+                                      }
+
+                                      if (snapshot.hasError ||
+                                          !snapshot.hasData) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(40),
+                                            border: Border.all(
+                                                color: const Color(0xFFF2F4F8)),
+                                          ),
+                                          child: TextField(
+                                            enabled: false,
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: Colors.transparent,
+                                              border: InputBorder.none,
+                                              hintText:
+                                                  'Erro ao carregar pontos.',
+                                              hintStyle:
+                                                  GoogleFonts.montserrat(
+                                                      color: const Color(
+                                                          0xFF979797)),
+                                            ),
+                                          ),
+                                        );
+                                      }
+
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                          border: Border.all(
+                                              color: const Color(0xFFF2F4F8)),
+                                        ),
+                                        child: TextField(
+                                          enabled: false,
+                                          decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.transparent,
+                                            border: InputBorder.none,
+                                            hintText:
+                                                'Total de pontos: ${snapshot.data}',
+                                            hintStyle: GoogleFonts.montserrat(
+                                                color:
+                                                    const Color(0xFF979797)),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                   const SizedBox(height: 20),
                                   Container(

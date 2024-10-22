@@ -5,8 +5,7 @@ import 'package:copa/UI/pages/profile_page.dart';
 import 'package:copa/UI/widgets/custom_bottom_navigation_bar.dart';
 import 'package:copa/features/user/model/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   final AppUser? appUser; // Parâmetro pode ser nulo
@@ -160,7 +159,7 @@ class _HomeContentState extends State<HomeContent> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
-                            child: Text("Logo"), // Placeholder da logo
+                            child: SvgPicture.asset('logoCopa.svg')
                           ),
                           CircleAvatar(
                             radius: 30,
@@ -202,32 +201,13 @@ class _HomeContentState extends State<HomeContent> {
                               ),
                             ),
                             const SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                // Exibir o pódio baseado nas pontuações
-                                if (turmasPontuacao.isNotEmpty) ...[
-                                  _buildPodiumColumn(
-                                      '2º',
-                                      _getSiglaTurma(turmasPontuacao, 2),
-                                      _getValorTurma(turmasPontuacao, 2),
-                                      2,
-                                      const Color(0xFFB52FF8)), // Segundo lugar - azul
-                                  _buildPodiumColumn(
-                                      '1º',
-                                      _getSiglaTurma(turmasPontuacao, 1),
-                                      _getValorTurma(turmasPontuacao, 1),
-                                      1,
-                                      const Color(0xFF2B47FC)), // Primeiro lugar - dourado
-                                  _buildPodiumColumn(
-                                      '3º',
-                                      _getSiglaTurma(turmasPontuacao, 3),
-                                      _getValorTurma(turmasPontuacao, 3),
-                                      3,
-                                      const Color(0xFFB52FF8)), // Terceiro lugar - azul
-                                ],
-                              ],
-                            ),
+                            // Gráfico Vertical (Pódio)
+                            if (turmasPontuacao.isNotEmpty)
+                              _buildPodium(),
+                            const SizedBox(height: 30),
+                            // Gráfico Horizontal (Ranking Geral)
+                            if (turmasPontuacao.isNotEmpty)
+                              _buildRankingList(turmasPontuacao),
                           ],
                         ),
                       ),
@@ -239,6 +219,36 @@ class _HomeContentState extends State<HomeContent> {
           ),
         ],
       ),
+    );
+  }
+
+  // Função para construir o pódio (gráfico vertical)
+  Widget _buildPodium() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildPodiumColumn(
+          '2º',
+          _getSiglaTurma(turmasPontuacao, 2),
+          _getValorTurma(turmasPontuacao, 2),
+          2,
+          const Color(0xFFB52FF8), // Segundo lugar - roxo
+        ),
+        _buildPodiumColumn(
+          '1º',
+          _getSiglaTurma(turmasPontuacao, 1),
+          _getValorTurma(turmasPontuacao, 1),
+          1,
+          const Color(0xFF2B47FC), // Primeiro lugar - azul
+        ),
+        _buildPodiumColumn(
+          '3º',
+          _getSiglaTurma(turmasPontuacao, 3),
+          _getValorTurma(turmasPontuacao, 3),
+          3,
+          const Color(0xFFB52FF8), // Terceiro lugar - roxo
+        ),
+      ],
     );
   }
 
@@ -297,6 +307,86 @@ class _HomeContentState extends State<HomeContent> {
           ),
         ),
       ],
+    );
+  }
+
+  // Função para construir a lista de rankings (gráfico horizontal)
+  Widget _buildRankingList(Map<String, int> turmas) {
+    // Obter o tamanho da tela do usuário
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Espaço reservado para o texto à direita
+    const double espacoTexto = 40;
+
+    // Definir tamanho mínimo e máximo para as barras
+    const double tamanhoMinimo = 40;
+    final double tamanhoMaximo = screenWidth * 0.7 - espacoTexto;
+
+    // Ordenar as turmas pela pontuação
+    List<MapEntry<String, int>> sortedTurmas =
+        turmas.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
+
+    // Encontrar o maior valor para escalar proporcionalmente
+    int maiorValor = sortedTurmas.first.value;
+
+    return Column(
+      children: List.generate(sortedTurmas.length, (index) {
+        String turmaId = sortedTurmas[index].key;
+        int valor = sortedTurmas[index].value;
+        String sigla = turmasSigla[turmaId] ?? 'N/A';
+
+        // Definir a largura da barra proporcional ao maior valor, limitando ao tamanho máximo da tela
+        double larguraBarra = (valor / maiorValor) * tamanhoMaximo;
+        if (larguraBarra < tamanhoMinimo) {
+          larguraBarra = tamanhoMinimo; // Aplicar o tamanho mínimo
+        }
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            children: [
+              // Posição da turma
+              Text(
+                '${index + 1}º',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 10),
+              // Barra de pontuação
+              Stack(
+                children: [
+                  Container(
+                    width: larguraBarra, // Largura proporcional à pontuação
+                    height: 32, // Ajustar altura da barra
+                    decoration: BoxDecoration(
+                      color: index == 0
+                          ? const Color(0xFF2B47FC) // Primeiro lugar - cor diferenciada
+                          : const Color(0xFFB52FF8), // Outros lugares - cor padrão
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  Positioned(
+                    right: 10,
+                    top: 8, // Centralizar o texto verticalmente
+                    child: Text(
+                      valor.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 10),
+              // Sigla da turma
+              Text(
+                sigla,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 

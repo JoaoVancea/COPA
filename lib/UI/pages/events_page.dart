@@ -1,4 +1,5 @@
 import 'package:copa/UI/pages/avaliar_eventos.dart';
+import 'package:copa/UI/pages/create_event.dart';
 import 'package:copa/features/user/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,11 @@ class _EventsPageState extends State<EventsPage> {
                     else
                       GestureDetector(
                         onTap: () {
-                          // Aqui você pode navegar para criar um evento
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CreateEvent(appUser: widget.appUser)));
                         },
                         child: Container(
                           width: 36,
@@ -86,8 +91,8 @@ class _EventsPageState extends State<EventsPage> {
         _buildTabBar(), // Mostra as abas "Avaliados" e "Não Avaliados" para o Admin
         Expanded(
           child: selectedTabIndex == 0
-              ? _buildAvaliadoEvents()
-              : _buildNaoAvaliadoEvents(),
+              ? _buildNaoAvaliadoEvents()
+              : _buildAvaliadoEvents(),
         ),
       ],
     );
@@ -150,7 +155,7 @@ class _EventsPageState extends State<EventsPage> {
                   : Colors.transparent,
               child: Center(
                 child: Text(
-                  "Avaliados",
+                  "Não Avaliados",
                   style: GoogleFonts.roboto(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -175,7 +180,7 @@ class _EventsPageState extends State<EventsPage> {
                   : Colors.transparent,
               child: Center(
                 child: Text(
-                  "Não Avaliados",
+                  "Avaliados",
                   style: GoogleFonts.roboto(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -190,29 +195,36 @@ class _EventsPageState extends State<EventsPage> {
     );
   }
 
-  // Mostra eventos avaliados para o Admin
-  Widget _buildAvaliadoEvents() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _firestore
-          .collection('evento')
-          .where('valor',
-              isNotEqualTo: 0) // Eventos com valor != 0 (aceitos e negados)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
+ Widget _buildAvaliadoEvents() {
+  return StreamBuilder<QuerySnapshot>(
+    stream: _firestore
+        .collection('evento')
+        .where('valor', isNotEqualTo: 0) // Eventos com valor != 0 (aceitos e negados)
+        .orderBy('dataCriacao', descending: true) // Ordena pelos mais recentes
+        .snapshots(),
+    builder: (context, snapshot) {
+      // Verifique se o stream ainda está ativo ou se os dados estão completos
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-        final events = snapshot.data!.docs;
+      if (snapshot.hasError) {
+        // Imprime o erro no console para depuração
+        print("Erro ao carregar eventos: ${snapshot.error}");
+        return const Center(child: Text("Erro ao carregar eventos."));
+      }
 
-        if (events.isEmpty) {
-          return const Center(child: Text("Nenhum evento avaliado."));
-        }
+      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+        return const Center(child: Text("Nenhum evento avaliado."));
+      }
 
-        return _buildEventList(events, isUser: false);
-      },
-    );
-  }
+      final events = snapshot.data!.docs;
+
+      return _buildEventList(events, isUser: false);
+    },
+  );
+}
+
 
   // Mostra eventos não avaliados (pendentes) para o Admin
   Widget _buildNaoAvaliadoEvents() {
@@ -229,7 +241,7 @@ class _EventsPageState extends State<EventsPage> {
         final events = snapshot.data!.docs;
 
         if (events.isEmpty) {
-          return const Center(child: Text("Nenhum evento não avaliado."));
+          return const Center(child: Text("Nenhum evento para avaliar."));
         }
 
         return _buildEventList(events, isUser: false);

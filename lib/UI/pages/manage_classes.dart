@@ -7,6 +7,7 @@ import 'package:copa/features/turma/model/turma_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class ManageClasses extends StatefulWidget {
   const ManageClasses({super.key});
@@ -477,6 +478,95 @@ class _ManageClassesState extends State<ManageClasses> {
                                 ),
                               ),
                             ],
+                          ),
+                          StreamBuilder(
+                            stream: _firestore
+                                .collection('evento')
+                                .where('turmaId',
+                                    isEqualTo: _selectedClass!.id)
+                                .where('valor', isGreaterThan: 0)
+                                .orderBy('dataCriacao', descending: true)
+                                .snapshots(),
+                            builder: (context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+
+                              if (!snapshot.hasData ||
+                                  snapshot.data!.docs.isEmpty) {
+                                return const Text('Nenhuma ocorrência.');
+                              }
+
+                              final events = snapshot.data!.docs;
+                              Map<String, List<QueryDocumentSnapshot>> groupedEvents =
+                                  {};
+
+                              for (var event in events) {
+                                final DateTime eventDate =
+                                    (event['dataCriacao'] as Timestamp)
+                                        .toDate();
+                                final String key = DateFormat('MM/yyyy')
+                                    .format(eventDate);
+
+                                if (groupedEvents.containsKey(key)) {
+                                  groupedEvents[key]!.add(event);
+                                } else {
+                                  groupedEvents[key] = [event];
+                                }
+                              }
+
+                              return Column(
+                                children: groupedEvents.entries.map((entry) {
+                                  final monthYear = DateFormat('MMMM / yyyy', 'pt_br')
+                                      .format(DateFormat('MM/yyyy')
+                                          .parse(entry.key));
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 20),
+                                      Text(
+                                        monthYear,
+                                        style: GoogleFonts.montserrat(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Column(
+                                        children: entry.value.map((event) {
+                                          final String title = event['titulo'];
+                                          final int value = event['valor'];
+                                          final DateTime eventDate =
+                                              (event['dataCriacao'] as Timestamp)
+                                                  .toDate();
+                                          final formattedDate =
+                                              DateFormat('dd/MM/yyyy')
+                                                  .format(eventDate);
+
+                                          return ListTile(
+                                            title: Text(
+                                              '$formattedDate - $title',
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize: 14, fontWeight: FontWeight.bold),
+                                            ),
+                                            trailing: Text(
+                                              '$value pts',
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ],
+                                  );
+                                }).toList(),
+                              );
+                            },
                           ),
                         ],
                       )

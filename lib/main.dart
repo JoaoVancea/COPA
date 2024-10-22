@@ -1,12 +1,16 @@
 import 'package:copa/UI/pages/home_page.dart';
-import 'package:copa/features/user/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:intl/date_symbol_data_local.dart'; // Importar para a configuração de localidade
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Inicializar a formatação de datas em português
+  await initializeDateFormatting('pt_BR', null);
+
   runApp(const MyApp());
 }
 
@@ -23,4 +27,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

@@ -14,12 +14,15 @@ class AvaliarEventoPage extends StatefulWidget {
 
 class _AvaliarEventoPageState extends State<AvaliarEventoPage> {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  bool _showDocumentField = false; // Controla a visibilidade do campo de pontuação
-  final TextEditingController _pontuacaoController = TextEditingController(text: '10'); // Valor padrão
+  bool _showDocumentField =
+      false; // Controla a visibilidade do campo de pontuação
+  final TextEditingController _pontuacaoController =
+      TextEditingController(text: '10'); // Valor padrão
 
   Future<void> _aprovarEvento() async {
     await _firestore.collection('evento').doc(widget.eventoId).update({
-      'valor': int.parse(_pontuacaoController.text), // Usa a pontuação fornecida ou a padrão (10)
+      'valor': int.parse(_pontuacaoController
+          .text), // Usa a pontuação fornecida ou a padrão (10)
     });
     Navigator.pop(context); // Volta à tela anterior após a aprovação
   }
@@ -48,141 +51,166 @@ class _AvaliarEventoPageState extends State<AvaliarEventoPage> {
           final String titulo = evento['titulo'];
           final String descricao = evento['descricao'];
           final String userId = evento['user']; // ID do usuário que criou o evento
+          final String turmaId = evento['turmaId']; // ID da turma associada
 
           return FutureBuilder<DocumentSnapshot>(
-            future: _firestore.collection('users').doc(userId).get(),
-            builder: (context, userSnapshot) {
-              if (!userSnapshot.hasData) {
+            future: _firestore.collection('turmas').doc(turmaId).get(),
+            builder: (context, turmaSnapshot) {
+              if (!turmaSnapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              final user = userSnapshot.data!.data() as Map<String, dynamic>;
-              final String userNome = user['nome'];
-              final String userFoto = user['imgUser'];
-              final String userTurma = '4DS'; // A turma do usuário (exemplo)
+              final turma = turmaSnapshot.data!.data() as Map<String, dynamic>;
+              final String turmaNome = turma['turma']; // Nome da turma
 
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+              return FutureBuilder<DocumentSnapshot>(
+                future: _firestore.collection('users').doc(userId).get(),
+                builder: (context, userSnapshot) {
+                  if (!userSnapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  final user = userSnapshot.data!.data() as Map<String, dynamic>;
+                  final String userNome = user['nome'];
+                  final String userFoto = user['imgUser'];
+
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(userFoto),
-                          radius: 25,
-                        ),
-                        const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
                           children: [
-                            Text(
-                              userNome,
-                              style: GoogleFonts.roboto(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(userFoto),
+                              radius: 25,
                             ),
-                            Text(
-                              userTurma, // A turma do usuário
-                              style: GoogleFonts.roboto(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
+                            const SizedBox(width: 16),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userNome,
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  turmaNome, // A turma associada ao evento
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
+                        const SizedBox(height: 24),
+                        Text(
+                          titulo,
+                          style: GoogleFonts.roboto(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          descricao,
+                          style: GoogleFonts.roboto(
+                            fontSize: 16,
+                            color: Colors.grey[800],
+                          ),
+                        ),
+                        const Spacer(),
+                        if (_showDocumentField)
+                          Column(
+                            children: [
+                              TextFormField(
+                                controller: _pontuacaoController,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  labelText: 'Pontuação',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                            ],
+                          ),
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 8,
+                              ),
+                            ],
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: _aprovarEvento,
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xFF2B47FC),
+                                        minimumSize: const Size(40, 40),
+                                        shape: const CircleBorder()),
+                                    child: const Icon(Icons.check, color: Colors.white),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text('Aprovar', style: GoogleFonts.roboto(fontSize: 10, fontWeight: FontWeight.bold))
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: _negarEvento,
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xFFB52FF8),
+                                        minimumSize: const Size(40, 40),
+                                        shape: const CircleBorder()),
+                                    child: const Icon(Icons.close, color: Colors.white),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text('Não aprovar', style: GoogleFonts.roboto(fontSize: 10, fontWeight: FontWeight.bold))
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _showDocumentField = !_showDocumentField;
+                                      });
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xFF2B47FC),
+                                        minimumSize: const Size(40, 40),
+                                        shape: const CircleBorder()),
+                                    child: const Icon(Icons.edit, color: Colors.white),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text('Documentar', style: GoogleFonts.roboto(fontSize: 10, fontWeight: FontWeight.bold))
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 24),
-                    Text(
-                      titulo,
-                      style: GoogleFonts.roboto(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      descricao,
-                      style: GoogleFonts.roboto(
-                        fontSize: 16,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                    const Spacer(),
-                    // Se o admin optar por documentar, um campo de texto aparecerá para inserir a pontuação
-                    if (_showDocumentField)
-                      Column(
-                        children: [
-                          TextFormField(
-                            controller: _pontuacaoController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: 'Pontuação',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                        ],
-                      ),
-                    // Container de opções
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 8,
-                          ),
-                        ],
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16),
-                          topRight: Radius.circular(16),
-                        ),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton.icon(
-                            onPressed: _aprovarEvento,
-                            icon: const Icon(Icons.check),
-                            label: const Text("Aprovar"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              minimumSize: const Size(120, 50),
-                            ),
-                          ),
-                          ElevatedButton.icon(
-                            onPressed: _negarEvento,
-                            icon: const Icon(Icons.close),
-                            label: const Text("Não Aprovar"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              minimumSize: const Size(120, 50),
-                            ),
-                          ),
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              setState(() {
-                                _showDocumentField = !_showDocumentField;
-                              });
-                            },
-                            icon: const Icon(Icons.edit),
-                            label: const Text("Documentar"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              minimumSize: const Size(120, 50),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  );
+                },
               );
             },
           );

@@ -133,6 +133,7 @@ class _CreateUserState extends State<CreateUser> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextField(
+                style: const TextStyle(color: Color(0xFFFFFFFF)),
                 controller: nomeController,
                 decoration: const InputDecoration(
                     hintText: 'Seu nome',
@@ -148,6 +149,7 @@ class _CreateUserState extends State<CreateUser> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextField(
+                style: const TextStyle(color: Color(0xFFFFFFFF)),
                 controller: sobrenomeController,
                 decoration: const InputDecoration(
                     hintText: 'Seu sobrenome',
@@ -163,6 +165,7 @@ class _CreateUserState extends State<CreateUser> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextField(
+                style: const TextStyle(color: Color(0xFFFFFFFF)),
                 controller: emailController,
                 decoration: const InputDecoration(
                     hintText: 'Seu email',

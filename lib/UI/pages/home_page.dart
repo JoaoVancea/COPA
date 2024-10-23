@@ -6,6 +6,7 @@ import 'package:copa/UI/widgets/custom_bottom_navigation_bar.dart';
 import 'package:copa/features/user/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   final AppUser? appUser; // Parâmetro pode ser nulo
@@ -30,12 +31,16 @@ class _HomePageState extends State<HomePage> {
           ? [
               HomeContent(),
               ManageClasses(),
-              EventsPage(appUser: widget.appUser!,),
+              EventsPage(
+                appUser: widget.appUser!,
+              ),
               ProfilePage(appUser: widget.appUser!),
             ]
           : [
               HomeContent(),
-              EventsPage(appUser: widget.appUser!,),
+              EventsPage(
+                appUser: widget.appUser!,
+              ),
               ProfilePage(appUser: widget.appUser!),
             ];
     } else {
@@ -141,7 +146,7 @@ class _HomeContentState extends State<HomeContent> {
             children: [
               Container(
                 width: double.infinity,
-                height: 300,
+                height: 280,
                 decoration: const BoxDecoration(
                   color: Color(0xFF4960F9),
                   borderRadius: BorderRadius.only(
@@ -158,18 +163,17 @@ class _HomeContentState extends State<HomeContent> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
-                            child: SvgPicture.asset('logoCopa.svg')
-                          ),
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage('luko.png'),
-                          ),
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+                              child: SvgPicture.asset('logoCopa.svg')),
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.asset('defaultAvatar.jpg',
+                                  width: 65, height: 65)),
                         ],
                       ),
                       Text(
-                        'Bem vindo!',
-                        style: TextStyle(
+                        'Seja Bem vindo!',
+                        style: GoogleFonts.montserrat(
                           fontSize: 24,
                           color: Colors.white,
                         ),
@@ -180,13 +184,13 @@ class _HomeContentState extends State<HomeContent> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 280, 20, 20),
+                padding: const EdgeInsets.fromLTRB(20, 230, 20, 20),
                 child: Column(
                   children: [
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFDFDFDF),
+                        color: const Color(0xFFFFFFFF),
                         borderRadius: BorderRadius.circular(40),
                       ),
                       child: Padding(
@@ -195,15 +199,14 @@ class _HomeContentState extends State<HomeContent> {
                           children: [
                             Text(
                               'Pontuação Geral',
-                              style: TextStyle(
-                                fontSize: 18,
+                              style: GoogleFonts.montserrat(
+                                fontSize: 24,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(height: 20),
                             // Gráfico Vertical (Pódio)
-                            if (turmasPontuacao.isNotEmpty)
-                              _buildPodium(),
+                            if (turmasPontuacao.isNotEmpty) _buildPodium(),
                             const SizedBox(height: 30),
                             // Gráfico Horizontal (Ranking Geral)
                             if (turmasPontuacao.isNotEmpty)
@@ -253,8 +256,8 @@ class _HomeContentState extends State<HomeContent> {
   }
 
   // Função para construir as colunas do pódio
-  Widget _buildPodiumColumn(
-      String posicao, String siglaTurma, int valor, int posicaoInt, Color color) {
+  Widget _buildPodiumColumn(String posicao, String siglaTurma, int valor,
+      int posicaoInt, Color color) {
     double altura;
     switch (posicaoInt) {
       case 1:
@@ -273,7 +276,7 @@ class _HomeContentState extends State<HomeContent> {
       children: [
         Text(
           posicao, // Exibe a posição (1º, 2º, 3º)
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -290,7 +293,7 @@ class _HomeContentState extends State<HomeContent> {
           child: Center(
             child: Text(
               valor.toString(),
-              style: TextStyle(
+              style: GoogleFonts.montserrat(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -301,7 +304,7 @@ class _HomeContentState extends State<HomeContent> {
         const SizedBox(height: 10),
         Text(
           siglaTurma,
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -323,8 +326,8 @@ class _HomeContentState extends State<HomeContent> {
     final double tamanhoMaximo = screenWidth * 0.7 - espacoTexto;
 
     // Ordenar as turmas pela pontuação
-    List<MapEntry<String, int>> sortedTurmas =
-        turmas.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
+    List<MapEntry<String, int>> sortedTurmas = turmas.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
 
     // Encontrar o maior valor para escalar proporcionalmente
     int maiorValor = sortedTurmas.first.value;
@@ -348,7 +351,8 @@ class _HomeContentState extends State<HomeContent> {
               // Posição da turma
               Text(
                 '${index + 1}º',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: GoogleFonts.montserrat(
+                    fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(width: 10),
               // Barra de pontuação
@@ -359,8 +363,10 @@ class _HomeContentState extends State<HomeContent> {
                     height: 32, // Ajustar altura da barra
                     decoration: BoxDecoration(
                       color: index == 0
-                          ? const Color(0xFF2B47FC) // Primeiro lugar - cor diferenciada
-                          : const Color(0xFFB52FF8), // Outros lugares - cor padrão
+                          ? const Color(
+                              0xFF2B47FC) // Primeiro lugar - cor diferenciada
+                          : const Color(
+                              0xFFB52FF8), // Outros lugares - cor padrão
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -369,7 +375,7 @@ class _HomeContentState extends State<HomeContent> {
                     top: 8, // Centralizar o texto verticalmente
                     child: Text(
                       valor.toString(),
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
@@ -381,7 +387,8 @@ class _HomeContentState extends State<HomeContent> {
               // Sigla da turma
               Text(
                 sigla,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: GoogleFonts.montserrat(
+                    fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -392,11 +399,10 @@ class _HomeContentState extends State<HomeContent> {
 
   // Função para buscar a sigla da turma baseado na posição
   String _getSiglaTurma(Map<String, int> turmas, int posicao) {
-    List<MapEntry<String, int>> sortedTurmas =
-        turmas.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
-    String turmaId = sortedTurmas.length >= posicao
-        ? sortedTurmas[posicao - 1].key
-        : "N/A";
+    List<MapEntry<String, int>> sortedTurmas = turmas.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    String turmaId =
+        sortedTurmas.length >= posicao ? sortedTurmas[posicao - 1].key : "N/A";
 
     // Retornar a sigla correspondente ao turmaId
     return turmasSigla.containsKey(turmaId) ? turmasSigla[turmaId]! : "N/A";
@@ -404,10 +410,8 @@ class _HomeContentState extends State<HomeContent> {
 
   // Função para buscar o valor da turma baseado na posição
   int _getValorTurma(Map<String, int> turmas, int posicao) {
-    List<MapEntry<String, int>> sortedTurmas =
-        turmas.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
-    return sortedTurmas.length >= posicao
-        ? sortedTurmas[posicao - 1].value
-        : 0;
+    List<MapEntry<String, int>> sortedTurmas = turmas.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    return sortedTurmas.length >= posicao ? sortedTurmas[posicao - 1].value : 0;
   }
 }

@@ -101,6 +101,7 @@ class _CreateClassState extends State<CreateClass> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextField(
+                style: const TextStyle(color: Color(0xFFFFFFFF)),
                 controller: nomeTurmaController,
                 decoration: const InputDecoration(
                     hintText: 'Nome da Turma',
@@ -116,6 +117,7 @@ class _CreateClassState extends State<CreateClass> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextField(
+                style: const TextStyle(color: Color(0xFFFFFFFF)),
                 controller: turmaController,
                 decoration: const InputDecoration(
                     hintText: 'Turma',
@@ -131,6 +133,7 @@ class _CreateClassState extends State<CreateClass> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextField(
+                style: const TextStyle(color: Color(0xFFFFFFFF)),
                 controller: siglaController,
                 decoration: const InputDecoration(
                     hintText: 'Sigla',

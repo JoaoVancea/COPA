@@ -63,6 +63,7 @@ class _EditClassState extends State<EditClass> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextFormField(
+                style: const TextStyle(color: Color(0xFFFFFFFF)),
                 initialValue: widget.turma.nome,
                 decoration: InputDecoration(
                     hintText: 'Garotos de Programa',
@@ -82,9 +83,10 @@ class _EditClassState extends State<EditClass> {
               const SizedBox(height: 20),
               Text('Turma',
                   style: GoogleFonts.roboto(
-                      fontSize: 14, color: const Color(0xFF80E0FF))),
+                      fontSize: 14, color: const Color(0xFFFFFFFF))),
               const SizedBox(height: 10),
               TextFormField(
+                style: const TextStyle(color: Color(0xFFC0C4C8)),
                 initialValue: widget.turma.turma,
                 decoration: InputDecoration(
                     hintText: '3DS',
@@ -107,6 +109,7 @@ class _EditClassState extends State<EditClass> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextFormField(
+                style: const TextStyle(color: Color(0xFFFFFFFF)),
                 initialValue: widget.turma.sigla,
                 decoration: InputDecoration(
                     hintText: 'GPS',

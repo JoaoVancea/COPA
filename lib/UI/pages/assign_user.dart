@@ -26,7 +26,8 @@ class _AssignUserState extends State<AssignUser> {
   }
 
   Future<void> _fetchUsers() async {
-    CollectionReference collection = _firestore.collection('users');
+    Query collection =
+        _firestore.collection('users').where('isAdmin', isEqualTo: false);
 
     QuerySnapshot snapshot = await collection.get();
     List<AppUser> fetchedUsers = snapshot.docs.map((doc) {
@@ -74,58 +75,119 @@ class _AssignUserState extends State<AssignUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: Column(
-          children: [
-            DropdownButtonFormField<AppUser>(
-              hint: Text('Selecione um usuário',
-                  style: GoogleFonts.montserrat(
-                      fontSize: 12, fontWeight: FontWeight.bold)),
-              value: _selectedUser,
-              items: _users.map((AppUser user) {
-                return DropdownMenuItem<AppUser>(
-                  value: user,
-                  child: Text(user.nome,
-                      style: GoogleFonts.montserrat(
-                        fontSize: 16,
-                      )),
-                );
-              }).toList(),
-              onChanged: (AppUser? newValue) {
-                setState(() {
-                  _selectedUser = newValue;
-                });
-              },
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey[200],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide.none,
-                ),
+        appBar: PreferredSize(
+          preferredSize: const Size(double.infinity, 110),
+          child: Container(
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF4960F9), Color(0xFF1937FE)],
+                begin: Alignment.topLeft,
+                end: Alignment.topRight,
               ),
             ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1937FE),
-                    shadowColor: Colors.transparent,
-                    minimumSize: const Size(315, 71)),
-                onPressed: _isLoading ? null : _assignUser,
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Atribuir usuário',
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 20,
-                                  color: const Color(0xFFFFFFFF))),
-                          const SizedBox(width: 22),
-                          const Icon(Icons.check, color: Color(0xFF1937FE)),
-                        ],
-                      )),
-          ],
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(
+                children: [
+                  // Ícone alinhado à esquerda
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      height: 42,
+                      width: 42,
+                      decoration: const ShapeDecoration(
+                        shape: CircleBorder(),
+                        color: Colors.white24,
+                      ),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ),
+                  // Texto centralizado
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Atribuir Representante',
+                      style: GoogleFonts.roboto(
+                        fontSize: 22,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Representantes', style: GoogleFonts.roboto(fontSize: 16)),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<AppUser>(
+                hint: Text('Selecione um usuário',
+                    style: GoogleFonts.montserrat(
+                        fontSize: 12, fontWeight: FontWeight.bold)),
+                value: _selectedUser,
+                items: _users.map((AppUser user) {
+                  return DropdownMenuItem<AppUser>(
+                    value: user,
+                    child: Text(user.nome,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 16,
+                        )),
+                  );
+                }).toList(),
+                onChanged: (AppUser? newValue) {
+                  setState(() {
+                    _selectedUser = newValue;
+                  });
+                },
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 40),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFECF9FF),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      elevation: 0),
+                  onPressed: _isLoading ? null : _assignUser,
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.check, color: Color(0xFF03A9F4)),
+                            const SizedBox(width: 8),
+                            Text('Atribuir usuário',
+                                style: GoogleFonts.roboto(
+                                    fontSize: 20,
+                                    color: const Color(0xFF03A9F4))),
+                          ],
+                        )),
+            ],
+          ),
         ));
   }
 }

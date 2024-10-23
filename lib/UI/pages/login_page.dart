@@ -14,46 +14,48 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance; // Instância do Firebase Auth
+  final FirebaseAuth _auth =
+      FirebaseAuth.instance; // Instância do Firebase Auth
   bool _isLoading = false;
 
   Future<void> _login() async {
-  setState(() {
-    _isLoading = true;
-  });
-
-  try {
-    // Tentativa de login com email e senha
-    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
-
-    // Buscar os dados do usuário no Firestore
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userCredential.user?.uid)
-        .get();
-
-    AppUser appUser = AppUser.fromFirestore(userDoc);
-
-    // Navega para a HomePage e passa a informação se o usuário é admin
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HomePage(appUser: appUser), // Passando isAdmin para a HomePage
-      ),
-    );
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Erro ao fazer login: $e')),
-    );
-  } finally {
     setState(() {
-      _isLoading = false;
+      _isLoading = true;
     });
+
+    try {
+      // Tentativa de login com email e senha
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // Buscar os dados do usuário no Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user?.uid)
+          .get();
+
+      AppUser appUser = AppUser.fromFirestore(userDoc);
+
+      // Navega para a HomePage e passa a informação se o usuário é admin
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              HomePage(appUser: appUser), // Passando isAdmin para a HomePage
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao fazer login: $e')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -136,9 +138,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   borderRadius: BorderRadius.circular(30),
                                 ),
                               ),
-                              onPressed: _isLoading ? null : _login, // Desabilita o botão se estiver carregando
+                              onPressed: _isLoading
+                                  ? null
+                                  : _login, // Desabilita o botão se estiver carregando
                               child: _isLoading
-                                  ? const CircularProgressIndicator() // Exibe o loader
+                                  ? const Center(
+                                      child:
+                                          CircularProgressIndicator()) // Exibe o loader
                                   : Align(
                                       alignment: Alignment.centerLeft,
                                       child: Row(
@@ -159,10 +165,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Align(
                               alignment: Alignment.topRight,
-                              child: SvgPicture.asset(
-                                  'purpleMoon.svg',
-                                  height: 50,
-                                  width: 85),
+                              child: SvgPicture.asset('purpleMoon.svg',
+                                  height: 50, width: 85),
                             ),
                           ],
                         ),

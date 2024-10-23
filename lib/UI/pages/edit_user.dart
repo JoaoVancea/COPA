@@ -87,6 +87,7 @@ class _EditUserState extends State<EditUser> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextFormField(
+                style: const TextStyle(color: Color(0xFFFFFFFF)),
                 controller: nomeController,
                 decoration: InputDecoration(
                     hintText: 'Nicolas',
@@ -109,6 +110,7 @@ class _EditUserState extends State<EditUser> {
                       fontSize: 14, color: const Color(0xFF80E0FF))),
               const SizedBox(height: 10),
               TextFormField(
+                style: const TextStyle(color: Color(0xFFFFFFFF)),
                 readOnly: true,
                 controller: emailController,
                 decoration: InputDecoration(

@@ -137,6 +137,7 @@ class _EditUserTurmaState extends State<EditUserTurma> {
                         fontSize: 14, color: const Color(0xFF80E0FF))),
                 const SizedBox(height: 10),
                 TextFormField(
+                  style: const TextStyle(color: Color(0xFFFFFFFF)),
                   controller: nomeController,
                   decoration: InputDecoration(
                     hintText: 'Nicolas',
@@ -162,6 +163,7 @@ class _EditUserTurmaState extends State<EditUserTurma> {
                         fontSize: 14, color: const Color(0xFF80E0FF))),
                 const SizedBox(height: 10),
                 TextFormField(
+                  style: const TextStyle(color: Color(0xFFFFFFFF)),
                   readOnly: true,
                   controller: emailController,
                   decoration: InputDecoration(
@@ -188,7 +190,7 @@ class _EditUserTurmaState extends State<EditUserTurma> {
                   children: [
                     Text('Estado',
                         style: GoogleFonts.roboto(
-                            color: const Color(0xFF80E0FF), fontSize: 14)),
+                            color: const Color(0xFF80E0FF), fontSize: 18)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -201,7 +203,7 @@ class _EditUserTurmaState extends State<EditUserTurma> {
                             });
                           },
                         ),
-                        const Text('Ativo'),
+                        Text('Ativo', style: GoogleFonts.montserrat(color: Colors.white)),
                         Radio<bool>(
                           value: false,
                           groupValue: isAtivo,
@@ -211,7 +213,7 @@ class _EditUserTurmaState extends State<EditUserTurma> {
                             });
                           },
                         ),
-                        const Text('Inativo'),
+                        Text('Inativo', style: GoogleFonts.montserrat(color: Colors.white)),
                       ],
                     ),
                   ],

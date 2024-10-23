@@ -85,7 +85,10 @@ class _ManageClassesState extends State<ManageClasses> {
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
                         child: SvgPicture.asset('logoCopa.svg'),
                       ),
-                      Image.asset('luko.png')
+                      ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.asset('defaultAvatar.jpg',
+                                  width: 65, height: 65)),
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -157,7 +160,7 @@ class _ManageClassesState extends State<ManageClasses> {
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: const Color(0xFFDFDFDF),
+                      color: const Color(0xFFFFFFFF),
                       borderRadius: BorderRadius.circular(40)),
                   child: Padding(
                     padding: const EdgeInsets.all(20),

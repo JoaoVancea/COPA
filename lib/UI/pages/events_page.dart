@@ -45,34 +45,39 @@ class _EventsPageState extends State<EventsPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SvgPicture.asset('chat.svg'),
-                    SvgPicture.asset('search.svg'),
-                    if (widget.appUser.isAdmin)
-                      const SizedBox.shrink()
-                    else
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      CreateEvent(appUser: widget.appUser)));
-                        },
-                        child: Container(
-                          width: 36,
-                          height: 36,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white.withOpacity(0.2),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 26,
+                    Row(
+                      children: [
+                        SvgPicture.asset('search.svg'),
+                        const SizedBox(width: 8),
+                        if (widget.appUser.isAdmin)
+                          const SizedBox.shrink()
+                        else
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CreateEvent(
+                                          appUser: widget.appUser)));
+                            },
+                            child: Container(
+                              width: 36,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white.withOpacity(0.2),
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 26,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -195,36 +200,37 @@ class _EventsPageState extends State<EventsPage> {
     );
   }
 
- Widget _buildAvaliadoEvents() {
-  return StreamBuilder<QuerySnapshot>(
-    stream: _firestore
-        .collection('evento')
-        .where('valor', isNotEqualTo: 0) // Eventos com valor != 0 (aceitos e negados)
-        .orderBy('dataCriacao', descending: true) // Ordena pelos mais recentes
-        .snapshots(),
-    builder: (context, snapshot) {
-      // Verifique se o stream ainda está ativo ou se os dados estão completos
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      }
+  Widget _buildAvaliadoEvents() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _firestore
+          .collection('evento')
+          .where('valor',
+              isNotEqualTo: 0) // Eventos com valor != 0 (aceitos e negados)
+          .orderBy('dataCriacao',
+              descending: true) // Ordena pelos mais recentes
+          .snapshots(),
+      builder: (context, snapshot) {
+        // Verifique se o stream ainda está ativo ou se os dados estão completos
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-      if (snapshot.hasError) {
-        // Imprime o erro no console para depuração
-        print("Erro ao carregar eventos: ${snapshot.error}");
-        return const Center(child: Text("Erro ao carregar eventos."));
-      }
+        if (snapshot.hasError) {
+          // Imprime o erro no console para depuração
+          print("Erro ao carregar eventos: ${snapshot.error}");
+          return const Center(child: Text("Erro ao carregar eventos."));
+        }
 
-      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-        return const Center(child: Text("Nenhum evento avaliado."));
-      }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text("Nenhum evento avaliado."));
+        }
 
-      final events = snapshot.data!.docs;
+        final events = snapshot.data!.docs;
 
-      return _buildEventList(events, isUser: false);
-    },
-  );
-}
-
+        return _buildEventList(events, isUser: false);
+      },
+    );
+  }
 
   // Mostra eventos não avaliados (pendentes) para o Admin
   Widget _buildNaoAvaliadoEvents() {
@@ -296,12 +302,6 @@ class _EventsPageState extends State<EventsPage> {
                       appUser: widget.appUser, // Passa o admin atual
                     ),
                   ),
-                );
-              } else if (!widget.appUser.isAdmin) {
-                // Exibe uma mensagem caso o usuário tente clicar em um evento (não permitido)
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                      content: Text("Você não pode avaliar eventos.")),
                 );
               }
             },

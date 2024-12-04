@@ -50,8 +50,10 @@ class _AvaliarEventoPageState extends State<AvaliarEventoPage> {
           final evento = snapshot.data!.data() as Map<String, dynamic>;
           final String titulo = evento['titulo'];
           final String descricao = evento['descricao'];
-          final String userId = evento['user']; // ID do usuário que criou o evento
+          final String userId =
+              evento['user']; // ID do usuário que criou o evento
           final String turmaId = evento['turmaId']; // ID da turma associada
+          final String imageUrl = evento['imageUrl']; // URL da imagem do evento
 
           return FutureBuilder<DocumentSnapshot>(
             future: _firestore.collection('turmas').doc(turmaId).get(),
@@ -70,7 +72,8 @@ class _AvaliarEventoPageState extends State<AvaliarEventoPage> {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  final user = userSnapshot.data!.data() as Map<String, dynamic>;
+                  final user =
+                      userSnapshot.data!.data() as Map<String, dynamic>;
                   final String userNome = user['nome'];
                   final String userFoto = user['imgUser'];
 
@@ -123,6 +126,13 @@ class _AvaliarEventoPageState extends State<AvaliarEventoPage> {
                             color: Colors.grey[800],
                           ),
                         ),
+                        if (imageUrl.isNotEmpty)
+                          Image.network(
+                            imageUrl,
+                            height: 200,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
                         const Spacer(),
                         if (_showDocumentField)
                           Column(
@@ -163,13 +173,18 @@ class _AvaliarEventoPageState extends State<AvaliarEventoPage> {
                                   ElevatedButton(
                                     onPressed: _aprovarEvento,
                                     style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF2B47FC),
+                                        backgroundColor:
+                                            const Color(0xFF2B47FC),
                                         minimumSize: const Size(40, 40),
                                         shape: const CircleBorder()),
-                                    child: const Icon(Icons.check, color: Colors.white),
+                                    child: const Icon(Icons.check,
+                                        color: Colors.white),
                                   ),
                                   const SizedBox(height: 8),
-                                  Text('Aprovar', style: GoogleFonts.roboto(fontSize: 10, fontWeight: FontWeight.bold))
+                                  Text('Aprovar',
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold))
                                 ],
                               ),
                               Column(
@@ -177,13 +192,18 @@ class _AvaliarEventoPageState extends State<AvaliarEventoPage> {
                                   ElevatedButton(
                                     onPressed: _negarEvento,
                                     style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFFB52FF8),
+                                        backgroundColor:
+                                            const Color(0xFFB52FF8),
                                         minimumSize: const Size(40, 40),
                                         shape: const CircleBorder()),
-                                    child: const Icon(Icons.close, color: Colors.white),
+                                    child: const Icon(Icons.close,
+                                        color: Colors.white),
                                   ),
                                   const SizedBox(height: 8),
-                                  Text('Não aprovar', style: GoogleFonts.roboto(fontSize: 10, fontWeight: FontWeight.bold))
+                                  Text('Não aprovar',
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold))
                                 ],
                               ),
                               Column(
@@ -191,17 +211,23 @@ class _AvaliarEventoPageState extends State<AvaliarEventoPage> {
                                   ElevatedButton(
                                     onPressed: () {
                                       setState(() {
-                                        _showDocumentField = !_showDocumentField;
+                                        _showDocumentField =
+                                            !_showDocumentField;
                                       });
                                     },
                                     style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF2B47FC),
+                                        backgroundColor:
+                                            const Color(0xFF2B47FC),
                                         minimumSize: const Size(40, 40),
                                         shape: const CircleBorder()),
-                                    child: const Icon(Icons.edit, color: Colors.white),
+                                    child: const Icon(Icons.edit,
+                                        color: Colors.white),
                                   ),
                                   const SizedBox(height: 8),
-                                  Text('Documentar', style: GoogleFonts.roboto(fontSize: 10, fontWeight: FontWeight.bold))
+                                  Text('Documentar',
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold))
                                 ],
                               ),
                             ],

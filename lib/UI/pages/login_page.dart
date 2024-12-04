@@ -19,43 +19,62 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   Future<void> _login() async {
-    setState(() {
-      _isLoading = true;
-    });
+  setState(() {
+    _isLoading = true;
+  });
 
-    try {
-      // Tentativa de login com email e senha
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+  try {
+    // Autenticação com email e senha
+    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
 
-      // Buscar os dados do usuário no Firestore
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user?.uid)
-          .get();
-
-      AppUser appUser = AppUser.fromFirestore(userDoc);
-
-      // Navega para a HomePage e passa a informação se o usuário é admin
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              HomePage(appUser: appUser), // Passando isAdmin para a HomePage
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao fazer login: $e')),
-      );
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+    // Verificar se o usuário está autenticado
+    final user = userCredential.user;
+    if (user == null) {
+      throw FirebaseAuthException(
+          code: 'user-not-found', message: 'Usuário não encontrado.');
     }
+
+    // Buscar dados do usuário no Firestore
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    if (!userDoc.exists) {
+      throw FirebaseAuthException(
+          code: 'user-data-missing',
+          message: 'Dados do usuário não encontrados no Firestore.');
+    }
+
+    // Converter para AppUser
+    AppUser appUser = AppUser.fromFirestore(userDoc);
+
+    // Navegar para HomePage com o usuário logado
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomePage(appUser: appUser),
+      ),
+    );
+  } on FirebaseAuthException catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Erro ao fazer login: ${e.message}')),
+    );
+  } catch (e) {
+    // Tratar erros genéricos
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Erro inesperado ao fazer login.')),
+    );
+  } finally {
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

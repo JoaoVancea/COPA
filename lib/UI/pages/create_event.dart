@@ -223,7 +223,7 @@ Widget build(BuildContext context) {
             ),
             Align(
               alignment: Alignment.center,
-              child: Text('Add Evento',
+              child: Text('Adicionar Evento',
                   style: GoogleFonts.roboto(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -286,15 +286,31 @@ Widget build(BuildContext context) {
                   ),
                 ),
               ),
-            const SizedBox(height: 48),
+            const SizedBox(height: 32),
             SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                onPressed: _selectImage,
-                child: const Text('Selecionar Imagem'),
-              ),
-            ),
+  width: double.infinity,
+  height: 56,
+  child: OutlinedButton(
+    onPressed: _selectImage, 
+    style: OutlinedButton.styleFrom(
+      backgroundColor: Colors.white, 
+      foregroundColor: Color(0xFF2743FD), 
+      side: const BorderSide(color: Color(0xFF2743FD), width: 1), 
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30), 
+      ),
+    ),
+    child: Text(
+      'Selecionar Imagem',
+      style: GoogleFonts.montserrat(
+                  fontSize: 16,
+                  color: const Color(0xFF2743FD),
+                ),
+      
+    ),
+  ),
+),
+
             const SizedBox(height: 24),
             // Exibição da Imagem Selecionada e Botão de Remover
             if (_selectedImage != null || _selectedImageFile != null) ...[
@@ -322,15 +338,30 @@ Widget build(BuildContext context) {
             ],
             const SizedBox(height: 24),
             SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                onPressed: _isLoading ? null : _createEvent,
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('Adicionar Evento'),
-              ),
-            ),
+  width: double.infinity,
+  height: 56,
+  child: OutlinedButton(
+    onPressed: _isLoading ? null : _createEvent,
+    style: OutlinedButton.styleFrom(
+      backgroundColor: Colors.white, 
+      foregroundColor: Color(0xFF2743FD), 
+      side: const BorderSide(color: Color(0xFF2743FD), width: 1), 
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30), 
+      ),
+    ),
+    child: _isLoading
+        ? const CircularProgressIndicator()
+        : Text(
+            'Adicionar Evento',
+            style: GoogleFonts.montserrat(
+                  fontSize: 16,
+                  color:  Color(0xFF2743FD),
+                ),
+          ),
+  ),
+),
+
           ],
         ),
       ),

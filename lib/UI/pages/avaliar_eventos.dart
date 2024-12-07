@@ -82,33 +82,47 @@ class _AvaliarEventoPageState extends State<AvaliarEventoPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(userFoto),
-                              radius: 25,
-                            ),
-                            const SizedBox(width: 16),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  userNome,
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                        Container(
+  padding: EdgeInsets.all(12), 
+  decoration: BoxDecoration(
+    color: Colors.white, //Cor de fundo
+    borderRadius: BorderRadius.circular(16), 
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.1), 
+        blurRadius: 6,
+        offset: Offset(0, 2), // Sombrinha
+      ),
+    ],
+  ),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(userFoto),
+                                radius: 25,
+                              ),
+                              const SizedBox(width: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    userNome,
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  turmaNome, // A turma associada ao evento
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 14,
-                                    color: Colors.grey,
+                                  Text(
+                                    turmaNome, // A turma associada ao evento
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 24),
                         Text(

@@ -93,7 +93,7 @@ class _EventsPageState extends State<EventsPage> {
   Widget _buildAdminView() {
     return Column(
       children: [
-        _buildTabBar(), // Mostra as abas "Avaliados" e "Não Avaliados" para o Admin
+        _buildTabBar(), 
         Expanded(
           child: selectedTabIndex == 0
               ? _buildNaoAvaliadoEvents()
@@ -142,63 +142,79 @@ class _EventsPageState extends State<EventsPage> {
   }
 
   // Abas para o admin
-  Widget _buildTabBar() {
+    Widget _buildTabBar() {
     return Row(
       children: [
         Expanded(
           child: GestureDetector(
             onTap: () {
               setState(() {
-                selectedTabIndex =
-                    0; // Exibe eventos avaliados (aceitos e negados)
+                selectedTabIndex = 0; 
               });
             },
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              color: selectedTabIndex == 0
-                  ? const Color(0xFF4960F9)
-                  : Colors.transparent,
-              child: Center(
-                child: Text(
-                  "Não Avaliados",
-                  style: GoogleFonts.roboto(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: selectedTabIndex == 0 ? Colors.white : Colors.black,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    "Não Avaliados",
+                    style: GoogleFonts.roboto(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: selectedTabIndex == 0
+                          ? Colors.blue
+                          : Colors.grey,
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 8),
+                Container(
+                  height: 2,
+                  color: selectedTabIndex == 0 ? Colors.blue : Colors.transparent,
+                ),
+              ],
             ),
           ),
+        ),
+        Container(
+          width: 1,
+          color: Colors.grey.shade300, 
         ),
         Expanded(
           child: GestureDetector(
             onTap: () {
               setState(() {
-                selectedTabIndex = 1; // Exibe eventos não avaliados (pendentes)
+                selectedTabIndex = 1; 
               });
             },
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              color: selectedTabIndex == 1
-                  ? const Color(0xFF4960F9)
-                  : Colors.transparent,
-              child: Center(
-                child: Text(
-                  "Avaliados",
-                  style: GoogleFonts.roboto(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: selectedTabIndex == 1 ? Colors.white : Colors.black,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    "Avaliados",
+                    style: GoogleFonts.roboto(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: selectedTabIndex == 1
+                          ? Colors.blue
+                          : Colors.grey,
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 8),
+                Container(
+                  height: 2,
+                  color: selectedTabIndex == 1 ? Colors.blue : Colors.transparent,
+                ),
+              ],
             ),
           ),
         ),
       ],
     );
   }
+
 
   Widget _buildAvaliadoEvents() {
     return StreamBuilder<QuerySnapshot>(

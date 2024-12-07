@@ -362,44 +362,51 @@ class _ManageClassesState extends State<ManageClasses> {
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 0, 0, 2),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text('Representantes',
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 15)),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      AssignUser(
-                                                          turma:
-                                                              _selectedClass)));
-                                        },
-                                        child: Container(
-                                          width: 30,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  color:
-                                                      const Color(0xFF2743FD),
-                                                  width: 2),
-                                              color: Colors.transparent),
-                                          child: const Icon(
-                                            Icons.add,
-                                            color: Color(0xFF2743FD),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Representantes',
+                                            style: GoogleFonts.montserrat(
+                                                fontSize: 15)),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AssignUser(
+                                                            turma:
+                                                                _selectedClass)));
+                                          },
+                                          child: Container(
+                                            width: 30,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                    color:
+                                                        const Color(0xFF2743FD),
+                                                    width: 2),
+                                                color: Colors.transparent),
+                                            child: const Icon(
+                                              Icons.add,
+                                              color: Color(0xFF2743FD),
+                                            ),
+                                            
                                           ),
                                         ),
-                                      )
-                                    ],
+                                      ],
+                                    ),
                                   ),
+                                  
                                 ),
+                              
                               ),
                             ],
                           ),
+                          SizedBox(height: 5),
                           StreamBuilder(
                             stream: _firestore
                                 .collection('userTurma')

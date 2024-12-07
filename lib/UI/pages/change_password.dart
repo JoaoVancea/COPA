@@ -11,122 +11,151 @@ class ChangePassword extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ListView(
+      body: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          // A ListView com o conteúdo da tela
+          ListView(
             children: [
-              SvgPicture.asset('changePassword.svg', width: svgWidth),
-              const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.all(30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Mudar Senha',
-                        style: GoogleFonts.montserrat(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black)),
-                    const SizedBox(height: 50),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Senha Atual',
-                            style: GoogleFonts.roboto(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                                color: const Color(0xFFB9B9B9)),
-                          ),
-                          PasswordField()
-                        ]),
-                    const SizedBox(height: 20),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Nova Senha',
-                            style: GoogleFonts.roboto(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                                color: const Color(0xFFB9B9B9)),
-                          ),
-                          PasswordField()
-                        ]),
-                    const SizedBox(height: 20),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Confirmar Senha',
-                            style: GoogleFonts.roboto(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                                color: const Color(0xFFB9B9B9)),
-                          ),
-                          PasswordField()
-                        ]),
-                    const SizedBox(height: 80),
-                    Center(
-                      child: Container(
-                        width: double.infinity,
-                        height: 72,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFF4960F9), Color(0xFF1433FF)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(28),
-                        ),
-                        child: Stack(
-                          alignment: Alignment.topRight,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                shadowColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SvgPicture.asset('changePassword.svg', width: svgWidth),
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Mudar Senha',
+                            style: GoogleFonts.montserrat(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)),
+                        const SizedBox(height: 50),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Senha Atual',
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14,
+                                    color: const Color(0xFFB9B9B9)),
                               ),
-                              onPressed: () {
-                                _changeSucessfull(context);
-                                Future.delayed(const Duration(seconds: 5), () {
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                });
-                              },
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Mudar Senha',
-                                      style: GoogleFonts.montserrat(
-                                          fontSize: 20, color: Colors.white),
-                                    ),
-                                    const Icon(Icons.arrow_forward,
-                                        color: Colors.white),
-                                  ],
-                                ),
+                              PasswordField()
+                            ]),
+                        const SizedBox(height: 20),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Nova Senha',
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14,
+                                    color: const Color(0xFFB9B9B9)),
                               ),
+                              PasswordField()
+                            ]),
+                        const SizedBox(height: 20),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Confirmar Senha',
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14,
+                                    color: const Color(0xFFB9B9B9)),
+                              ),
+                              PasswordField()
+                            ]),
+                        const SizedBox(height: 80),
+                        Center(
+                          child: Container(
+                            width: double.infinity,
+                            height: 72,
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF4960F9), Color(0xFF1433FF)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(28),
                             ),
-                            Align(
-                                alignment: Alignment.topRight,
-                                child: SvgPicture.asset('purpleMoon.svg',
-                                    height: 50, width: 85))
-                          ],
+                            child: Stack(
+                              alignment: Alignment.topRight,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    shadowColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    _changeSucessfull(context);
+                                    Future.delayed(const Duration(seconds: 5), () {
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Mudar Senha',
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 20, color: Colors.white),
+                                        ),
+                                        const Icon(Icons.arrow_forward,
+                                            color: Colors.white),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                    alignment: Alignment.topRight,
+                                    child: SvgPicture.asset('purpleMoon.svg',
+                                        height: 50, width: 85))
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
+          ),
+          
+          // A setinha no topo esquerdo, fixada
+          Positioned(
+            top: 20, 
+            left: 16, 
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.2),
+                ),
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                  size: 26,
+                ),
+              ),
+            ),
           ),
         ],
       ),

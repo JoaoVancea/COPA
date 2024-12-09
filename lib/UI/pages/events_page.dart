@@ -1,5 +1,6 @@
 import 'package:copa/UI/pages/avaliar_eventos.dart';
 import 'package:copa/UI/pages/create_event.dart';
+import 'package:copa/UI/pages/detalhes_evento.dart';
 import 'package:copa/features/user/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -103,43 +104,43 @@ class _EventsPageState extends State<EventsPage> {
     );
   }
 
-  // Interface do usuário normal
   Widget _buildUserView() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _firestore
-          .collection('evento')
-          .where('user', isEqualTo: widget.appUser.id)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
+  return StreamBuilder<QuerySnapshot>(
+    stream: _firestore
+        .collection('evento')
+        .where('user', isEqualTo: widget.appUser.id) // Filtra pelo ID do usuário
+        .snapshots(),
+    builder: (context, snapshot) {
+      if (!snapshot.hasData) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      final events = snapshot.data!.docs;
+
+      if (events.isEmpty) {
+        return const Center(child: Text("Nenhum evento publicado."));
+      }
+
+      // Ordena os eventos para que os "em andamento" (valor == 0) fiquem no topo
+      events.sort((a, b) {
+        final int valorA = a['valor'];
+        final int valorB = b['valor'];
+
+        // Coloca os eventos com valor 0 (em andamento) no topo
+        if (valorA == 0 && valorB != 0) {
+          return -1; // Evento "em andamento" vem primeiro
+        } else if (valorA != 0 && valorB == 0) {
+          return 1; // Evento já avaliado vem depois
         }
+        return 0; // Deixa os demais eventos na ordem original
+      });
 
-        final events = snapshot.data!.docs;
+      return _buildEventList(events,
+          isUser: true); // Usa a função existente para exibir os eventos
+    },
+  );
+}
 
-        if (events.isEmpty) {
-          return const Center(child: Text("Nenhum evento publicado."));
-        }
-
-        // Ordena os eventos para que os "em andamento" (valor == 0) fiquem no topo
-        events.sort((a, b) {
-          final int valorA = a['valor'];
-          final int valorB = b['valor'];
-
-          // Coloca os eventos com valor 0 (em andamento) no topo
-          if (valorA == 0 && valorB != 0) {
-            return -1; // Evento "em andamento" vem primeiro
-          } else if (valorA != 0 && valorB == 0) {
-            return 1; // Evento já avaliado vem depois
-          }
-          return 0; // Deixa os demais eventos na ordem original
-        });
-
-        return _buildEventList(events,
-            isUser: true); // Usa a função existente para exibir os eventos
-      },
-    );
-  }
 
   // Abas para o admin
     Widget _buildTabBar() {
@@ -271,155 +272,160 @@ class _EventsPageState extends State<EventsPage> {
     );
   }
 
-  // Função genérica para exibir os eventos (tanto para admin quanto usuário)
-  // Função genérica para exibir os eventos (tanto para admin quanto usuário)
-  Widget _buildEventList(List<QueryDocumentSnapshot> events,
-      {required bool isUser}) {
-    return ListView.builder(
-      itemCount: events.length,
-      itemBuilder: (context, index) {
-        final event = events[index];
-        final titulo = event['titulo'];
-        final descricao = event['descricao'];
-        final int valor = event['valor']; // Pontuação do evento
-        final String eventoId = event.id; // ID do evento para navegação
-        final Timestamp? timestamp = event['dataCriacao'] as Timestamp?;
-        DateTime? date = timestamp != null ? timestamp.toDate() : null;
+ 
+ Widget _buildEventList(List<QueryDocumentSnapshot> events,
+    {required bool isUser}) {
+  return ListView.builder(
+    itemCount: events.length,
+    itemBuilder: (context, index) {
+      final event = events[index];
+      final titulo = event['titulo'];
+      final descricao = event['descricao'];
+      final int valor = event['valor']; // Pontuação do evento
+      final String eventoId = event.id; // ID do evento para navegação
+      final Timestamp? timestamp = event['dataCriacao'] as Timestamp?;
+      DateTime? date = timestamp != null ? timestamp.toDate() : null;
 
-        // Define o status baseado no valor (apenas para usuários normais)
-        String status = '';
-        Color statusColor = Colors.transparent;
+      // Define o status baseado no valor (apenas para usuários normais)
+      String status = '';
+      Color statusColor = Colors.transparent;
 
-        if (isUser) {
-          if (valor > 0) {
-            status = "Aceito com pontuação: $valor";
-            statusColor = Colors.green;
-          } else if (valor == -1) {
-            status = "Negado";
-            statusColor = Colors.red;
-          } else {
-            status = "Em andamento";
-            statusColor = Colors.orange;
-          }
+      if (isUser) {
+        if (valor > 0) {
+          status = "Aceito com pontuação: $valor";
+          statusColor = Colors.green;
+        } else if (valor == -1) {
+          status = "Negado";
+          statusColor = Colors.red;
+        } else {
+          status = "Em andamento";
+          statusColor = Colors.orange;
         }
+      }
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: GestureDetector(
-            onTap: () {
-              // **Verifica se o evento já foi avaliado**
-              if (widget.appUser.isAdmin && valor == 0) {
-                // Permite a navegação para avaliação somente se o evento estiver pendente
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AvaliarEventoPage(
-                      eventoId: eventoId,
-                      appUser: widget.appUser, // Passa o admin atual
-                    ),
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: GestureDetector(
+          onTap: () {
+            // Redirecionamento baseado no estado do evento
+            if (valor != 0 || isUser) {
+              // Eventos avaliados ou eventos do representante vão para a tela de detalhes
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetalhesEventoPage(eventoId: eventoId),
+                ),
+              );
+            } else if (widget.appUser.isAdmin && valor == 0) {
+              // Eventos pendentes de avaliação para Admin
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AvaliarEventoPage(
+                    eventoId: eventoId,
+                    appUser: widget.appUser,
                   ),
-                );
-              }
-            },
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                ),
+              );
+            }
+          },
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 2,
+            child: ListTile(
+              contentPadding: const EdgeInsets.all(16),
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  widget.appUser.imgUser,
+                ),
+                radius: 25,
               ),
-              elevation: 2,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(16),
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    widget.appUser.imgUser, // Usa a imagem do aluno
-                  ),
-                  radius: 25,
+              title: Text(
+                titulo,
+                style: GoogleFonts.roboto(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                title: Text(
-                  titulo,
-                  style: GoogleFonts.roboto(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    descricao,
+                    style: GoogleFonts.roboto(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
                   ),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  if (isUser) ...[
+                    const SizedBox(height: 8),
                     Text(
-                      descricao,
+                      status,
                       style: GoogleFonts.roboto(
-                        fontSize: 14,
-                        color: Colors.grey,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: statusColor,
                       ),
                     ),
-                    if (isUser) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        status,
-                        style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: statusColor,
-                        ),
-                      ),
-                    ],
-                    if (!isUser && valor != 0) ...[
-                      // Exibe a pontuação ou se foi negado somente para o admin e se o valor for diferente de 0
-                      const SizedBox(height: 8),
-                      if (valor == -1)
-                        // Exibe "Evento negado" se o valor for -1
-                        Text(
-                          'Evento negado',
-                          style: GoogleFonts.roboto(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                        )
-                      else
-                        // Exibe a pontuação para valores maiores que 0
-                        Text(
-                          'Pontuação: $valor',
-                          style: GoogleFonts.roboto(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue, // Exibe a pontuação em azul
-                          ),
-                        ),
-                    ],
                   ],
-                ),
-                trailing: date != null
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            '${date.hour}:${date.minute.toString().padLeft(2, '0')}',
-                            style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Text(
-                            '${date.day}/${date.month.toString().padLeft(2, '0')}',
-                            style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      )
-                    : const Text(
-                        "Sem data",
-                        style: TextStyle(
-                          fontSize: 12,
+                  if (!isUser && valor != 0) ...[
+                    const SizedBox(height: 8),
+                    if (valor == -1)
+                      Text(
+                        'Evento negado',
+                        style: GoogleFonts.roboto(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                           color: Colors.red,
                         ),
+                      )
+                    else
+                      Text(
+                        'Pontuação: $valor',
+                        style: GoogleFonts.roboto(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
                       ),
+                  ],
+                ],
               ),
+              trailing: date != null
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          '${date.hour}:${date.minute.toString().padLeft(2, '0')}',
+                          style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '${date.day}/${date.month.toString().padLeft(2, '0')}',
+                          style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    )
+                  : const Text(
+                      "Sem data",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.red,
+                      ),
+                    ),
             ),
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
+
 }

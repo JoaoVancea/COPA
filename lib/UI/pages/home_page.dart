@@ -88,54 +88,57 @@ class _HomeContentState extends State<HomeContent> {
 
   // Função para buscar os dados das turmas e eventos
   Future<void> _fetchData() async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    // Buscar turmas
-    QuerySnapshot turmasSnapshot = await firestore.collection('turmas').get();
-    Map<String, String> siglas = {};
+  // Buscar turmas
+  QuerySnapshot turmasSnapshot = await firestore.collection('turmas').get();
+  Map<String, String> siglas = {};
 
-    // Mapear o ID da turma para a sua sigla
-    for (var doc in turmasSnapshot.docs) {
-      var data = doc.data() as Map<String, dynamic>;
-      String turmaId = doc.id;
-      String sigla = data['sigla'] ?? '';
-      siglas[turmaId] = sigla;
-    }
+  // Mapear o ID da turma para a sua sigla
+  for (var doc in turmasSnapshot.docs) {
+    var data = doc.data() as Map<String, dynamic>;
+    String turmaId = doc.id;
+    String sigla = data['sigla'] ?? '';
+    siglas[turmaId] = sigla;
+  }
 
-    // Buscar eventos
-    QuerySnapshot eventosSnapshot = await firestore.collection('evento').get();
-    Map<String, int> somaPontuacao = {};
+  // Buscar eventos
+  QuerySnapshot eventosSnapshot = await firestore.collection('evento').get();
+  Map<String, int> somaPontuacao = {};
 
-    // Iterar sobre cada documento da coleção 'evento'
-    for (var doc in eventosSnapshot.docs) {
-      var data = doc.data() as Map<String, dynamic>;
+  // Iterar sobre cada documento da coleção 'evento'
+  for (var doc in eventosSnapshot.docs) {
+    var data = doc.data() as Map<String, dynamic>;
 
-      String turmaId = data['turmaId'];
-      int valor = data['valor'];
+    String turmaId = data['turmaId'];
+    int valor = data['valor'];
 
-      // Somar valores apenas se forem positivos
-      if (valor > 0) {
-        if (somaPontuacao.containsKey(turmaId)) {
-          somaPontuacao[turmaId] = somaPontuacao[turmaId]! + valor;
-        } else {
-          somaPontuacao[turmaId] = valor;
-        }
+    // Somar valores apenas se forem positivos
+    if (valor > 0) {
+      if (somaPontuacao.containsKey(turmaId)) {
+        somaPontuacao[turmaId] = somaPontuacao[turmaId]! + valor;
+      } else {
+        somaPontuacao[turmaId] = valor;
       }
     }
+  }
 
-    // Certificar-se de que todas as turmas estão presentes no mapa de pontuações (mesmo com 0 pontos)
-    siglas.forEach((turmaId, sigla) {
-      if (!somaPontuacao.containsKey(turmaId)) {
-        somaPontuacao[turmaId] = 0;
-      }
-    });
+  // Certificar-se de que todas as turmas estão presentes no mapa de pontuações (mesmo com 0 pontos)
+  siglas.forEach((turmaId, sigla) {
+    if (!somaPontuacao.containsKey(turmaId)) {
+      somaPontuacao[turmaId] = 0;
+    }
+  });
 
-    // Atualizar o estado com as siglas e pontuações
+  // Verificar se o widget ainda está montado antes de chamar setState
+  if (mounted) {
     setState(() {
       turmasSigla = siglas; // Mapear ID -> Sigla
       turmasPontuacao = somaPontuacao; // Mapear ID -> Pontuação
     });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

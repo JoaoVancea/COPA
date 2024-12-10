@@ -21,6 +21,7 @@ class _ManageClassesState extends State<ManageClasses> {
   List<Turma> _classes = [];
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final TextEditingController _presencaController = TextEditingController();
 
   @override
   void initState() {
@@ -39,6 +40,23 @@ class _ManageClassesState extends State<ManageClasses> {
     setState(() {
       _classes = fetchedClasses;
     });
+  }
+
+  Future<void> _updatePresenca() async {
+    if (_selectedClass != null) {
+      int presenca = int.tryParse(_presencaController.text) ?? 0;
+      if (presenca >= 1 && presenca <= 100) {
+        await _firestore.collection('turmas').doc(_selectedClass!.id).update({
+          'presenca': presenca,
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Presença atualizada com sucesso')));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Por favor, insira um número entre 1 e 100')));
+      }
+    }
   }
 
   Future<int> _getTotalPointsForClass(String turmaId) async {
@@ -205,6 +223,7 @@ class _ManageClassesState extends State<ManageClasses> {
                                         border: Border.all(
                                             color: const Color(0xFFF2F4F8))),
                                     child: TextField(
+                                      controller: _presencaController,
                                       decoration: InputDecoration(
                                           filled: true,
                                           fillColor: Colors.transparent,

@@ -243,10 +243,10 @@ class _HomeContentState extends State<HomeContent> {
                             ),
                             const SizedBox(height: 20),
                             // Gráfico Vertical (Pódio)
-                            if (turmasPontuacao.isNotEmpty) _buildPodium(),
+                            if (turmasPontuacao.isNotEmpty && selectedOption != null) _buildPodium(),
                             const SizedBox(height: 30),
                             // Gráfico Horizontal (Ranking Geral)
-                            if (turmasPontuacao.isNotEmpty)
+                            if (turmasPontuacao.isNotEmpty && selectedOption != null)
                               _buildRankingList(turmasPontuacao),
                           ],
                         ),

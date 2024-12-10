@@ -339,7 +339,7 @@ class _ManageClassesState extends State<ManageClasses> {
                                               BorderRadius.circular(30),
                                         ),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: _updatePresenca,
                                       child: Padding(
                                         padding: const EdgeInsets.all(12.0),
                                         child: Row(
